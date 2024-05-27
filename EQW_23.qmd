@@ -1,0 +1,353 @@
+---
+title: "Etudes qualitatives sur le web"
+subtitle: "M2 Marketing digital"
+author: "Sophie Balech"
+institute: "IAE Amiens <br/> sophie.balech@u-picardie.fr"
+date: 2023-10-02
+format: 
+  revealjs:
+    slide-number: c
+    logo: IAE_creteil.svg
+    footer: "Copyright (C) EQW SB23-24"
+    title-slide-attributes: 
+      data-background-color: "#FFD1DC"
+execute: 
+  echo: false
+  warning: false
+  error: false
+editor: visual
+---
+
+## Objectifs du cours {.smaller}
+
+-   Savoir constituer un corpus à partir de données web
+
+-   Être capable d'analyser un corpus :
+
+    -   termes fréquents
+
+    -   POS et dépendances nominales
+
+    -   analyse du sentiment
+
+    -   topics
+
+-   Utiliser RStudio et le langage R
+
+## Évaluation {.smaller}
+
+-   Commune avec l'UE "Stratégies de distribution à l'ère de l'omnicanal"
+
+-   Réalisation d'une netnographie par groupe de 2 (à 3) étudiants
+
+-   À rendre le 11/12/2023
+
+Une prise de hauteur est attendue dans la conduite de cette analyse, en mobilisant des concepts et cadres théoriques vus dans le cours "Stratégies de distribution à l'ère de l'omnicanal".
+
+## Analyse d'un corpus {.smaller}
+
+-   Par groupe de 2 (à 3) étudiants
+
+-   **Réaliser une netnographie** :
+
+    -   **Choisir une enseigne de distribution**
+
+    -   **Collecter et analyser les avis en ligne** postés par les clients sur le site de l'enseigne ou sur les forums clients
+
+    -   **Proposer des recommandations** à l'enseigne pour répondre aux attentes des clients.
+
+-   Le rendu prendra la forme :
+
+    -   D'un rapport réalisé au format Quarto et publié en html, s'appuyant sur les outils méthodologiques abordés dans l'UE "Études qualitatives sur le web"
+
+    -   À rendre le 11/12/2023
+
+    -   D'un exposé de 15 minutes lors de la séance du 11/12/2023
+
+## Plan du cours {.smaller}
+
+I.  Introduction :
+    -   Exemple d'analyse
+    -   Le vocabulaire du *text mining*
+    -   Le langage R et l'utilisation de RStudio
+II. Constituer son corpus
+III. Prise en main du logiciel et premières analyses
+IV. Annotations et dépendances syntaxiques
+V.  Analyse du sentiment
+VI. *Topics Analysis* et analyse de profils
+
+------------------------------------------------------------------------
+
+## Introduction {.scrollable .smaller}
+
+### Exemple d'analyse
+
+::: panel-tabset
+```{r}
+library(readxl)
+library(tidyverse)
+library(quanteda)
+library(quanteda.textstats)
+library(quanteda.textplots)
+library(RColorBrewer)
+library(ggwordcloud)
+library(seededlda)
+library(cowplot)
+
+
+data <- read_csv("data_trustpilot_oiseaux.csv")
+ann_token<-read_rds("annotation_oiseaux.rds")
+```
+
+#### Les données
+
+Corpus de 4 388 avis clients scrapés depuis TrustPilot concernant le site e-commerce Oiseaux Mania
+
+![](oiseaux_mania.png){fig-align="center"}
+
+#### Distribution des notes
+
+```{r}
+data%>%group_by(note)%>%summarise(n=n(), prop=n/nrow(data))%>%
+  ggplot(aes(note,prop))+
+  geom_col(fill=c("red","pink","orange","gold","lightgreen"))+
+  annotate("text", x=2, y=0.7, label=paste("Note moyenne = ",round(mean(data$note),1)))+
+  scale_y_continuous(labels=scales::percent)+
+  theme_light()+
+  labs(title = "Répartition des avis en fonction des notes", subtitle = "Corpus Oiseaux Mania", caption=paste("Data : TrustPilot, n=", nrow(data)), x="note", y=NULL)
+```
+
+```{r}
+data%>%mutate(note=as.factor(note))%>%group_by(year, note)%>%summarise(n=n() ,prop=n/nrow(data))%>%
+  ggplot(aes(year, prop))+
+  geom_col(aes(fill=note))+
+  scale_fill_discrete(type=c("red","pink","orange","gold","lightgreen"))+
+  scale_y_continuous(labels=scales::percent)+
+  theme_light()+
+  labs(title = "Répartition des avis dans le temps", subtitle = "Corpus Oiseaux Mania", caption=paste("Data : TrustPilot, n=", nrow(data)), x="années", y=NULL)
+```
+
+```{r}
+data%>%mutate(note=as.factor(note))%>%group_by(year, note)%>%summarise(n=n())%>%
+  ggplot(aes(x=year, y=n, group=note))+
+  geom_bar(position="fill",stat="identity", aes(fill=note))+
+  scale_fill_discrete(type=c("red","pink","orange","gold","lightgreen"))+
+  scale_y_continuous(labels=scales::percent)+
+  theme_minimal()+
+  labs(title = "Comparaison de la répartition des notes dans le temps", subtitle = "Corpus Oiseaux Mania", caption=paste("Data : TrustPilot, n=", nrow(data)), x="années", y=NULL)
+```
+
+#### Termes fréquents
+
+```{r}
+vocab2<-ann_token%>%
+  filter(upos=="NOUN" | upos=="VERB" | upos=="ADJ")%>%
+  summarise(freq=n(),.by=c(lemma,upos))%>%
+  filter(freq>30)%>%
+  mutate(angle= 90 * sample(c(0, 1), n(), replace = TRUE, prob = c(75, 25)))
+
+ggplot(vocab2)+
+  geom_text_wordcloud_area(aes(label=lemma, size=freq, color=freq, angle=angle))+
+  scale_size_area(max_size = 24)+
+  scale_color_fermenter(palette = "Set2")+
+  theme_minimal()
+
+ann_racine<- ann_token%>%
+  left_join(ann_token,by= c("doc_id"="doc_id", "sid"="sid", "tid_source"="tid"), suffix=c("", "_source"))
+#on filtre les relation nominales puis celle qui concerne les termes cibles
+foo<-ann_racine %>%
+  filter(relation == "amod"|relation =="acl"|relation =="nmod"|relation =="appos") %>%
+  select(qual = lemma, source = lemma_source)%>%
+  filter(source=="commande"|source=="livraison"|source=="produit"|source=="prix")%>% 
+  group_by(source,qual)%>%
+  summarise(n=n())
+# On remet en forme les données
+foo1<-foo%>%
+  pivot_wider(names_from = source, values_from = n)%>%
+  mutate(across(everything(), ~replace_na(.x,0)))%>%
+  mutate(sum=rowSums(.[,2:5]))%>%
+  filter(sum>10)%>%
+  select(-sum)%>%
+  pivot_longer(!qual, names_to = "source", values_to = "n")
+
+ggplot(foo1,aes(x=reorder(qual,n), y=n, group=source))+
+  geom_bar(stat="identity",aes(fill=source),position=position_dodge())+
+  coord_flip()+
+  scale_fill_brewer(palette="Spectral",direction = -1)+
+  theme_minimal()+ 
+  labs( title="Analyse des dépendances nominales", subtitle = "les termes du site et du service",caption =paste("Data : TrustPilot, n=", nrow(data)), x="tokens dépendants", y="Fréquence", fill="Termes")+
+  facet_wrap(~source, ncol = 4)
+
+data<-ann_token%>%
+  filter(upos=="NOUN"|upos=="VERB"|upos=="ADJ")%>%
+  group_by(doc_id)%>%
+  summarise(text=paste(lemma,collapse = " "))%>%
+  inner_join(data, join_by("doc_id"=="id"))%>%
+  mutate(NPS=case_when(note<4~"Détracteurs",
+                       note==4~"Passifs",
+                       note>4~"Promoteurs"))
+
+corpus_new<-corpus(data, text_field = "text")
+toks<-tokens(corpus_new)%>%
+  tokens_replace(c("produire", "conformer"), c("produit", "conforme"))%>%
+  tokens_remove(c(".",","))
+
+colloc<-textstat_collocations(toks, min_count = 10, tolower = TRUE)
+
+toks<-tokens_compound(toks, pattern = colloc[colloc$z>7,])
+
+
+dfm_new<-dfm(toks)%>%
+  dfm_trim(min_termfreq = 0.6, termfreq_type = "quantile",
+           max_docfreq = 0.1, docfreq_type = "prop")
+
+col<- c("red","gold", "chartreuse")
+dfm_gp <-dfm_new %>%
+    dfm_group(groups = NPS)
+graph_promoteur<-textstat_keyness(dfm_gp, target = "Promoteurs")%>%
+  textplot_keyness(n = 30L, labelsize = 2,   show_legend = FALSE, 
+                     show_reference = FALSE,   color = c("Darkgreen", "gray"))+
+  labs(x=NULL)
+
+
+graph_detracteur <- textstat_keyness(dfm_gp, target = "Détracteurs" )%>%
+  textplot_keyness(n = 30L, labelsize = 2,   show_legend = FALSE,   
+                     show_reference = FALSE,   color = c("firebrick", "gray"))+ 
+  labs(x=NULL)
+
+
+graph_passif <- textstat_keyness(dfm_gp, target = "Passifs")%>%
+  textplot_keyness(n = 30L, labelsize = 2,   show_legend = FALSE,   show_reference = FALSE,    color = c("gold2", "gray"))+
+  labs(x=NULL)
+
+
+p<- plot_grid(graph_detracteur, graph_passif ,graph_promoteur,  labels = c('Détracteurs', 'Passifs', 'Promoteurs'), label_size = 10, ncol=3)
+
+title <- ggdraw() + draw_label("NPS : Les raisons qui conduisent à la recommandation (keyness)", fontface='bold')
+
+note <- ggdraw()+ draw_text("Les valeurs représentent le keyness des termes.\nIl mesure leur caractère distinctif par une statistique du chi²", size=8,x = 0.5, y = 0.5)
+
+
+plot_grid(title, p,note, ncol=1, rel_heights=c(0.1, 1)) # rel_heights values control title margins
+```
+
+#### Analyse de topics
+
+```{r}
+dict<-dictionary(list(produit=c("produit*", "cage","oiseau","graine*"),
+                      livraison=c("livr*","recepti*","délai"),
+                      commande=c("command*","emballage","envoi*"),
+                      site="*site*",
+                      prix=c("*prix*","frais_port")
+                      ))
+
+
+
+
+set.seed(1234)
+slda<-textmodel_seededlda(dfm_new, dict, residual = T)
+
+
+
+theta<-as.data.frame(slda$theta)%>%mutate(doc_id=as.numeric(row.names(.)))
+
+data<-inner_join(data, theta)
+
+foo<-data%>%select(note, produit, livraison, commande, site,prix, other)%>%
+  pivot_longer(-note, names_to = "topic", values_to = "value")
+
+ggplot(foo,aes(x=note, y=value, group=topic))+
+  geom_bar(position="fill",stat="identity", aes(fill=topic))+
+  scale_fill_brewer(palette="Spectral")+
+  theme_minimal()
+
+
+```
+:::
+
+## Introduction {.smaller}
+
+### Le vocabulaire du *text mining*
+
+-   Les métadonnées d'un corpus : toutes les variables permettant de caractériser un texte en tant que texte
+    -   Exemples : titre, date, auteur, ...
+
+::: columns
+::: {.column width="50%"}
+-   Corpus
+
+-   Mot / terme
+
+-   *Token*
+
+-   NLP
+
+-   POS
+:::
+
+::: {.column width="50%"}
+-   Lemmes, stemmes
+
+-   N-gramme
+
+-   Dtm, dfm
+
+-   Stopwords
+
+-   Annotations
+:::
+:::
+
+## Introduction {.smaller}
+
+### Les sentiments
+
+Tonalité positive ou négative
+
+La roue des émotions de Plutchik (1980) :
+
+![](plutchik.png){fig-align="right"}
+
+## Introduction {.smaller}
+
+### Le langage R et l'utilisation de RStudio
+
+-   Un langage informatique pour les calculs statistiques
+
+-   Un logiciel libre
+
+-   Une communauté très active
+
+-   De nombreuses ressources en ligne
+
+-   Le principe des packages (library ou bibliothèques de fonctions)
+
+## Introduction {.smaller}
+
+[R et RStudio]{style="color:red"}
+
+-   <https://www.r-project.org/>
+
+-   <https://rstudio.com/products/rstudio/>
+
+[Des ressources en ligne]{style="color:green"}
+
+-   [Introduction à R et au tidyverse](https://juba.github.io/tidyverse/index.html)
+
+-   [R for data science](https://r4ds.had.co.nz/)
+
+-   [Text mining with R](https://www.tidytextmining.com/index.html)
+
+-   [Tutoriels Quanteda](https://tutorials.quanteda.io/introduction/)
+
+-   [Les techniques du NLP pour la recherche en sciences de gestion](https://www.researchgate.net/publication/337744581_NLP_text_mining_V40_-_une_introduction_-_cours_programme_doctoral)
+
+-   [NLP avec r et en français - un Manuel synthétique](https://benaventc.github.io/NLPBook/)
+
+-   [Quarto pour communiquer](https://quarto.org/)
+
+## Constituer son corpus
+
+Outil recommandé : [WebScraper](https://webscraper.io/)
+
+![](webscraper.png)

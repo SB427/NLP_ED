@@ -1,0 +1,353 @@
+---
+title: "*Topic Analysis*"
+---
+
+```{r setup, include=TRUE, output=FALSE}
+
+library(readxl)
+library(tidyverse)
+library(quanteda)
+library(quanteda.textstats)
+library(quanteda.textplots)
+library(RColorBrewer)
+library(topicmodels)
+library(ggwordcloud)
+
+
+```
+
+# Les données
+
+```{r data, warning=FALSE}
+data <- read_csv("data/data_trustpilot_oiseaux.csv")
+
+```
+
+# *Topics Analysis*
+
+On va maintenant s'intéresser à la détection et à l'analyse de topics. Il existe de nombreux algorithmes pour cela. On va en explorer un : le modèle LDA, pour Latent Dirichlet Allocation.
+
+-   Description du modèle LDA :
+
+L'idée est la suivante : un corpus est considéré comme une collection de documents. Chaque document est considéré comme étant composé d'un mélange de topics. Chaque topic est considéré comme étant composé d'un mélange de tokens. L'algorithme calcule par itération les probabilités d'appartenance des tokens aux topics et des topics aux documents, ce qui nous permet de visualiser la composition des sujets identifiés.
+
+![Le modèle LDA](lda.png)
+
+## Le modèle LDA avec topicmodels
+
+On travaille à partir du dfm. On doit transformer le format des données afin de l'injecter dans le modèle. On réduit le nombre de termes considérés, ce qui permet de réduire les temps de calcul et de trouver une solution convergente.
+
+```{r lda}
+corpus_oiseaux<-corpus(data, text_field = "comments")
+
+tok<-tokens(corpus_oiseaux, remove_punct = TRUE, remove_numbers = TRUE, remove_symbols = TRUE)%>%
+  tokens_remove(stopwords("fr"))
+
+dfm<-dfm(tok)
+
+
+#On filtre les mots trop et trop peu fréquents
+rem<-c("très","rapide","produit","livraison", "commande", "bien", "site", "a", "bon", "merci", "recommande","parfait")
+
+news_dfm <- dfm %>%
+  dfm_remove(rem)%>%
+  dfm_trim(min_termfreq = 0.8, termfreq_type = "quantile",    # 80% des mots les plus fréquents
+           max_docfreq = 0.2, docfreq_type = "prop")          #qui apparaissent dans max 20% des documents
+
+#On supprime les entrées vides
+news_dfm <- news_dfm[ntoken(news_dfm) > 0,]
+
+#On transforme en dtm, un format compris par le package topicsmodel
+dtm <- convert(news_dfm, to = "topicmodels")
+
+#On lance le modèle
+lda <- LDA(dtm, k = 5)
+
+#On regarde les résultats
+terms(lda,10)
+# topics(lda)
+
+corpus_oiseaux["text996"]
+corpus_oiseaux["text995"]
+corpus_oiseaux["text999"]
+
+```
+
+## *Topic Analysis* à partir de l'annotation des *part of speech*
+
+Les résultats du modèle LDA sont très dépendants de la qualité du vocabulaire injecté. Plus on travaille ce vocabulaire, meilleurs sont les résultats. On va donc reprendre tout ce qu'on a fait jusqu'à présent pour améliorer les résultats de notre modèle : on récupère les annotations ; on filtre le vocabulaire pour ne garder que les noms, adjectifs et verbes ; on crée les collocations ; on filtre les occurrences trop et pas assez fréquentes.
+
+```{r}
+
+ann_token<-read_rds("data/annotation_oiseaux.rds")
+
+
+data<-ann_token%>%
+  filter(upos=="NOUN"|upos=="VERB"|upos=="ADJ")%>%
+  group_by(doc_id)%>%
+  summarise(text=paste(lemma,collapse = " "))%>%
+  inner_join(data, join_by("doc_id"=="id"))
+
+corpus_new<-corpus(data, text_field = "text")
+toks<-tokens(corpus_new)%>%
+  tokens_replace(c("produire", "conformer","colir"), c("produit", "conforme","colis"))%>%
+  tokens_remove(c(".",","))
+
+colloc<-textstat_collocations(toks, min_count = 10, tolower = TRUE)
+
+toks<-tokens_compound(toks, pattern = colloc[colloc$z>7,])
+
+
+dfm_new<-dfm(toks)%>%
+  dfm_trim(min_termfreq = 0.6, termfreq_type = "quantile",
+           max_docfreq = 0.1, docfreq_type = "prop")
+dtm_new <- convert(dfm_new, to = "topicmodels")
+
+set.seed(1234)
+lda <- LDA(dtm_new, k = 5)
+
+term<-as_tibble(terms(lda,25))%>%
+  mutate(rank=as.numeric(row.names(.)))%>%
+  pivot_longer(-rank, names_to = "topic",values_to = "term")
+
+ggplot(term, aes(x=topic, y= rank, group =  term , label = term)) + 
+  scale_y_reverse() +
+  geom_text(aes(color=topic,size=8/log(rank)))+
+  theme_minimal()+
+  scale_color_hue()+
+  guides(color="none",size="none")
+
+```
+
+## Déterminer le nombre de topics optimal
+
+Le modèle LDA fonctionne à partir d'un nombre de topics donné. La question est donc de savoir quel est le nombre de topics optimal pour décrire notre corpus. Heureusement, des personnes ont créé des fonctions et des procédures pour nous aider dans cette quête. L'idée est de calculer différents modèles pour différents nombres de topics, et de comparer la qualité des résultats. La procédure ci-dessous est en deux parties :
+
+-   Tout d'abord, on compare la qualité de différents indicateurs sur un grand nombre de modèles, pour aboutir à une liste de quelques solutions à comparer plus en détail (de 3 à 10).
+
+-   Ensuite, on compare les résultats de la liste réduite de modèles, pour déterminer lequel a la meilleure distribution des topics entre les documents. La distribution recherchée est celle qui distingue le plus les documents en fonction des topics, tout en étant à droite de l'estimation d'une répartition uniforme des documents entre les topics. Le critère de parcimonie nous invite à choisir la solution avec le moins grand nombre de topics, en cas de résultats comparables.
+
+```{r proc_topic}
+##Etape 1 : les meilleures solutions
+library(ldatuning)
+library(magrittr)
+
+result <- FindTopicsNumber(dtm_new,
+                           topics = c(seq(from = 2, to = 9, by = 1), seq(10, 25, 5)),
+                           metrics = c("Griffiths2004", "CaoJuan2009", "Arun2010", "Deveaud2014"),
+                           method = "Gibbs",
+                           control = list(seed = 0:4,
+                                          nstart = 5,
+                                          best = TRUE),
+                           mc.cores = 4L,
+                           verbose = TRUE
+                           )
+
+FindTopicsNumber_plot(result)
+
+
+##Etape 2 : comparaison des solutions
+para <- tibble(k = c(6,7,8,9,10))
+lemma_tm <- para %>%
+  mutate(lda = map(k,
+                   function(k) LDA(
+                     k=k,
+                     x=dtm_new,
+                     method="Gibbs",
+                     control=list(seed = 0:4,
+                                  nstart = 5,
+                                  best = TRUE)
+                     )
+                   )
+         )
+
+lemma_tm <- lemma_tm %>%
+  mutate(lda_gamma = map(.x=lda,
+                         .f=tidytext::tidy,
+                         matrix="gamma"))
+lemma_tm %>%
+  unnest(lda_gamma) %>%
+  group_by(k, document) %>%
+  arrange(desc(gamma)) %>%
+  slice(1) %>%
+  ungroup() %>%
+  ggplot(aes(x=gamma, fill=factor(k))) +
+  geom_histogram(bins = 20) +
+  scale_fill_discrete(name = "Number of\nTopics") +
+  xlab("maximum gamma per document") +
+  facet_wrap(~k) +
+  geom_vline(aes(xintercept = 1/k),
+             tibble(k=lemma_tm %$% unique(k)),
+             color="darkred")
+
+
+```
+
+## Représentation graphique
+
+À partir de la solution retenue aux étapes précédentes, on va représenter les différents topics :
+
+```{r lda_graph, message=FALSE}
+set.seed(1234)     #pour la réplicabilité des résultats
+lda <- LDA(dtm_new, k = 9)
+
+lda_res<-as.data.frame(terms(lda, 25))%>%
+  rename(nom1='Topic 1',nom2='Topic 2', nom3='Topic 3', nom4='Topic 4', nom5='Topic 5',nom6='Topic 6',nom7='Topic 7', nom8='Topic 8', nom9='Topic 9')%>%
+  mutate(rank=as.numeric(row.names(.)))%>%
+  pivot_longer(-rank, names_to = "topic", values_to = "term")
+
+ggplot(lda_res, aes(x=topic, y= rank, group =  term , label = term)) + 
+  scale_y_reverse() +
+  geom_text(aes(color=topic,size=8/log(rank)))+
+  theme_minimal()+
+  scale_color_hue()+
+  guides(color=FALSE,size=FALSE)
+
+
+```
+
+# *Theory-Driven LDA*
+
+Ici, on va forcer les *topics* grâce à la réalisation d'un dictionnaire. C'est utile quand on cherche à appliquer une théorie qui nous dit ce que l'on cherche à trouver. Par exemple, ici on s'intéresse aux attributs clés des logements oiseaux. Dans d'autre cas, on pourra chercher à expliquer les notes en fonction de *topics* qui reflètent les attributs clés. On peut réaliser le dictionnaire a priori ou après différentes analyses de *topics*, de co-occurences, de fréquence, etc.
+
+On commence par créer un dictionnaire.
+
+```{r dict}
+
+dict<-dictionary(list(produit=c("produit*", "cage","oiseau","graine*"),
+                      livraison=c("livr*","recepti*","délai"),
+                      commande=c("command*","emballage","envoi*"),
+                      site="*site*",
+                      prix=c("*prix*","frais_port")
+                      ))
+dict
+head(dfm_lookup(dfm_new,dict))
+```
+
+On utilise ensuite le package 'seededlda' pour lancer le modèle semi-supervisé.
+
+```{r seededlda}
+library(seededlda)
+
+set.seed(1234)
+slda<-textmodel_seededlda(dfm_new, dict, residual = T)
+terms(slda,20)
+
+```
+
+# Expliquer les notes
+
+Dans cette dernière partie, nous allons nous intéresser aux notes et tenter de les expliquer à l'aide de l'analyse de *topics*.
+
+## NPS
+
+Dans un premier temps, nous allons regarder le Net Promoter Score (NPS), puis nous étudierons les discours des promoteurs, détracteurs et passifs.
+
+Tout d'abord, nous créons nos catégories en fonction des notes.
+
+```{r nps}
+col<- c("red","gold", "chartreuse")
+
+
+data<-data %>%
+  mutate(NPS=case_when(note<4~"Détracteurs",
+                       note==4~"Passifs",
+                       note>4~"Promoteurs"))
+
+
+ggplot(data, aes(x=note))+
+  geom_histogram(binwidth = 1, aes(fill=NPS))+
+  labs( title= " Distribution des scores NPS", 
+        subtitle = paste("Moyenne du NPS de l'échantillon",round(mean(data$note),1)), 
+        caption = paste("Data : TrustPilot, n=",nrow(data)), 
+        y = "Fréquence")+ 
+  scale_fill_manual(values=col)+
+  theme_light()
+
+```
+
+Puis nous réalisons un nuage de mots pour chaque groupe, afin d'avoir une idée de ce qui est exprimé.
+
+```{r keyness1}
+dfm_new$NPS<-data$NPS
+# docvars(toks)
+
+dfm_gp <-dfm_new %>%
+    dfm_group(groups = NPS)
+# dfm_gp
+
+stat<- dfm_gp %>% 
+  textstat_frequency(n = 30,  groups = NPS)
+stat
+
+ggplot(stat, aes(label = feature)) +
+  geom_text_wordcloud(aes(size=log(frequency), color=group)) +
+  theme_minimal()+
+  facet_wrap(vars(group))+
+  scale_color_manual(values=col)+ 
+  labs(title="Nuage des 30 mots les plus fréquents (Par groupes)",
+       caption = "La taille des mots est proportionnelle au log de leurs fréquences")
+
+
+```
+
+Maintenant, nous nous intéressons à ce qui caractérise chacun des groupes par rapport aux autres, grâce à la mesure du *keyness*.
+
+```{r keyness2}
+
+graph_promoteur<-textstat_keyness(dfm_gp, target = "Promoteurs")%>%
+  textplot_keyness(n = 30L, labelsize = 2,   show_legend = FALSE, 
+                     show_reference = FALSE,   color = c("Darkgreen", "gray"))+
+  labs(x=NULL)
+
+
+graph_detracteur <- textstat_keyness(dfm_gp, target = "Détracteurs" )%>%
+  textplot_keyness(n = 30L, labelsize = 2,   show_legend = FALSE,   
+                     show_reference = FALSE,   color = c("firebrick", "gray"))+ 
+  labs(x=NULL)
+
+
+graph_passif <- textstat_keyness(dfm_gp, target = "Passifs")%>%
+  textplot_keyness(n = 30L, labelsize = 2,   show_legend = FALSE,   show_reference = FALSE,    color = c("gold2", "gray"))+
+  labs(x=NULL)
+
+
+library(cowplot)
+p<- plot_grid(graph_detracteur, graph_passif ,graph_promoteur,  labels = c('Détracteurs', 'Passifs', 'Promoteurs'), label_size = 10, ncol=3)
+
+title <- ggdraw() + draw_label("NPS : Les raisons qui conduisent à la recommandation (keyness)", fontface='bold')
+
+note <- ggdraw()+ draw_text("Les valeurs représentent le keyness des termes.\nIl mesure leur caractère distinctif par une statistique du chi²", size=8,x = 0.5, y = 0.5)
+
+
+plot_grid(title, p,note, ncol=1, rel_heights=c(0.1, 1)) # rel_heights values control title margins
+
+
+
+```
+
+## En fonction des topics
+
+Maintenant, nous cherchons à voir la répartition des *topics* dans les notes, pour comprendre si certains *topics* contribuent plus ou moins à la satisfaction.
+
+```{r note}
+
+theta<-as.data.frame(slda$theta)%>%mutate(doc_id=as.numeric(row.names(.)))
+
+data<-inner_join(data, theta)
+
+foo<-data%>%select(note, produit, livraison, commande, site,prix, other)%>%
+  pivot_longer(-note, names_to = "topic", values_to = "value")
+
+ggplot(foo,aes(x=note, y=value, group=topic))+
+  geom_bar(position="fill",stat="identity", aes(fill=topic))+
+  scale_fill_brewer(palette="Spectral")+
+  theme_minimal()
+
+
+#Pour finir, une petite régression !
+fit<-lm(note~produit+livraison+commande+site+prix, data =data)
+summary(fit)
+
+
+```

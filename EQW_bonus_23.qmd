@@ -1,0 +1,140 @@
+---
+title: "Etudes qualitatives sur le web"
+subtitle: "Bonus"
+date: "last-modified"
+author:
+  name: Sophie Balech
+  email: sophie.balech@u-picardie.fr
+  affiliation: IAE Amiens - Université Picardie Jules Verne
+license: "CC BY"
+copyright: "(C) EQW SB23-24"
+title-block-banner: true
+format: 
+  html:
+    theme:
+      light: yeti
+      dark: darkly
+    code-tools: true
+    toc: true
+    number-sections: true
+    toc-location: left
+execute:
+  eval: false
+  output: false
+editor: visual
+---
+
+```{r setup, include=FALSE}
+
+library(tidyverse)
+
+```
+
+# Scraper Trust Pilot à l'aide de WebScraper
+
+Voici le sitemap de WebScraper utilisé pour scraper les avis concernant Oiseaux Mania sur TrustPilot :
+
+`{"_id":"trustpilot_oiseaux","startUrl":["https://fr.trustpilot.com/review/oiseaux-mania.com"],"selectors":[{"id":"auteur","parentSelectors":["message"],"type":"SelectorText","selector":"span.typography_heading-xxs__QKBS8.typography_appearance-default__AAY17","multiple":false,"regex":""},{"id":"date","parentSelectors":["message"],"type":"SelectorText","selector":"p.typography_body-m_xgxZ","multiple":false,"regex":""},{"id":"titre","parentSelectors":["message"],"type":"SelectorText","selector":"h2","multiple":false,"regex":""},{"id":"review","parentSelectors":["message"],"type":"SelectorText","selector":"p.typography_body-l__KUYFJ","multiple":false,"regex":""},{"id":"note","parentSelectors":["message"],"type":"SelectorElementAttribute","selector":"img","multiple":false,"extractAttribute":"alt"},{"id":"page","parentSelectors":["_root","page"],"paginationType":"clickMore","selector":"a.pagination-link_next__SDNU4","type":"SelectorPagination"},{"id":"message","parentSelectors":["page"],"type":"SelectorElement","selector":"div:nth-of-type(n+4) > article div.styles_reviewCardInner__EwDq2","multiple":true}]}`
+
+# Quelques éléments pour transformer votre propre base de données en un dataframe exploitable
+
+```{r transfo, output=FALSE}
+data<-read_csv("trustpilot_oiseaux.csv")
+
+data2<- data%>%
+  mutate(date2=str_remove(date,"Date de l'expérience: "), 
+         month=str_extract(date2, "[A-z|û|é]+"), 
+         year=str_extract(date2,"20..$")%>%as.factor())%>% #on récupère juste la date, puis le mois et l'année
+  mutate(note2=str_extract(note,"[1-5]")%>%as.factor())%>% #on récupère juste la note
+  mutate(comments=if_else(review=="null", titre, 
+                          if_else(str_detect(titre,"[a-z]…")==TRUE, review,
+                                  if_else(str_equal(titre, str_sub(review, start=1, end=str_count(titre)))==TRUE, review, paste(titre, review)))))%>% #on ajuste le commentaire pour avoir le titre et la review dans une seule variable
+  filter(!is.na(note2))%>% #on élminine les lignes sans notes
+  mutate(id=row.names(.)) #on crée les identifiants
+
+data2<-data2%>%
+  select(id, auteur, date2, month, year, note2, comments)%>% #on sélectionne les variables qui nous intéressent
+  rename(date=date2, note=note2) #on renomme
+
+write_csv(data2, "data_trustpilot_oiseaux.csv") #on sauvegarde
+
+```
+
+# Faire des statistiques basiques :
+
+```{r stat}
+data_year<-data%>%
+  group_by(year)%>%
+  summarise(n_year=n())%>%
+  mutate(nb=nrow(data))
+
+data%>%
+  mutate(note=as.factor(note))%>%
+  group_by(year, note)%>%
+  summarise(n=n())%>%
+  full_join(data_year)%>%
+  mutate(prop_year=n_year/nb, prop_note=n/n_year)
+```
+
+# Faire une analyse des correspondances entre les profils et les topics
+
+```{r ca}
+
+
+data$topic <- seededlda::topics(slda)
+ca<- table(data$topic, data$NPS)
+prop.table(ca, 2)
+
+library ("FactoMineR")
+library(factoextra)
+res.ca <- CA (ca, graph = FALSE)
+fviz_ca_biplot (res.ca, repel = TRUE)
+
+```
+
+# Segmenter les clients sur la base des topics
+
+```{r segment}
+
+df_clus<- data %>% 
+  select(produit, livraison, commande, site,prix, other) %>%drop_na()
+
+dist<-get_dist(df_clus)
+
+
+
+fit <-hclust(dist, method="ward")
+
+#afficher
+plot(fit)
+
+
+groups <- as.data.frame(cutree(fit, k=6), nm="segment") #k à modifier en fonction des résultats de la classification
+
+df_clus<- cbind(df_clus, groups)
+
+
+foo<- df_clus %>%
+  pivot_longer(-segment, names_to = "topic", values_to = "value")%>%
+  group_by(segment, topic) %>% 
+  summarise(value=mean(value))# cut tree into 5 clusters
+
+g1<- ggplot(foo, aes(x=segment,y=value, group=topic))+
+  geom_bar(stat="identity", aes(fill= topic))+ 
+  theme(legend.position = "bottom")
+
+table(df_clus$segment)
+g2<-ggplot(df_clus, aes(x=segment))+geom_bar()
+g2
+
+plot_grid(g1, g2,  nrow=2)
+
+df_clus2<-cbind(data,groups)%>%
+  group_by(segment)%>%
+  summarise(nps=mean(note, na.rm=TRUE))
+
+
+
+ggplot(df_clus2, aes(x=segment,y=nps))+geom_bar(stat="identity")
+
+```

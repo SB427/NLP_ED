@@ -1,0 +1,28 @@
+# Introduction
+
+
+## Ressources en ligne :
+
+[R et RStudio]{style="color:red"}
+
+-   <https://www.r-project.org/>
+
+-   <https://rstudio.com/products/rstudio/>
+
+[Des ressources en ligne]{style="color:green"}
+
+-   [Introduction à R et au tidyverse](https://juba.github.io/tidyverse/index.html)
+
+-   [R for data science](https://r4ds.had.co.nz/)
+
+-   [Hands-On Programming with R](https://rstudio-education.github.io/hopr/)
+
+-   [Text mining with R](https://www.tidytextmining.com/index.html)
+
+-   [Tutoriels Quanteda](https://tutorials.quanteda.io/introduction/)
+
+-   [Les techniques du NLP pour la recherche en sciences de gestion](https://www.researchgate.net/publication/337744581_NLP_text_mining_V40_-_une_introduction_-_cours_programme_doctoral)
+
+-   [NLP avec r et en français - un Manuel synthétique](https://benaventc.github.io/NLPBook/)
+
+-   [Quarto pour communiquer](https://quarto.org/)
