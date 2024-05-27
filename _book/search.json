@@ -13,8 +13,8 @@
     "objectID": "index.html#ressources-en-ligne",
     "href": "index.html#ressources-en-ligne",
     "title": "NLP avec R pour les sciences sociales",
-    "section": "Ressources en ligne :",
-    "text": "Ressources en ligne :\nR et RStudio\n\nhttps://www.r-project.org/\nhttps://rstudio.com/products/rstudio/\n\nDes ressources en ligne\n\nIntroduction à R et au tidyverse\nR for data science\nHands-On Programming with R\nText mining with R\nTutoriels Quanteda\nLes techniques du NLP pour la recherche en sciences de gestion\nNLP avec r et en français - un Manuel synthétique\nQuarto pour communiquer\nLe séminaire du Collège de France : Apprendre les langues aux machines - B. Sagot",
+    "section": "Ressources en ligne",
+    "text": "Ressources en ligne\nR et RStudio\n\nhttps://www.r-project.org/\nhttps://rstudio.com/products/rstudio/\n\nDes ressources en ligne\n\nIntroduction à R et au tidyverse\nR for data science\nHands-On Programming with R\nText mining with R\nTutoriels Quanteda\nLes techniques du NLP pour la recherche en sciences de gestion\nNLP avec r et en français - un Manuel synthétique\nQuarto pour communiquer\nLe séminaire du Collège de France : Apprendre les langues aux machines - B. Sagot",
     "crumbs": [
       "Introduction"
     ]

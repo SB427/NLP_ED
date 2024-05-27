@@ -54,7 +54,7 @@ dfm<-dfm(tok)
 On va maintenant constituer des bi-grammes basés sur de nombreuses co-occurrences entre les termes :
 
 ```{r cooc}
-textstat_collocations(tok)
+# textstat_collocations(tok)
 
 head(textstat_collocations(tok), 5)
 tail(textstat_collocations(tok),10)

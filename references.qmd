@@ -1,9 +1,9 @@
 # References {.unnumbered}
 
-::: {#refs}
+
 ---
 nocite: |
   @*
 ---
 
-:::
+

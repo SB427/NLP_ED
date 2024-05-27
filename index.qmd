@@ -9,7 +9,7 @@ L'environnement de traitement des données est R et Rstudio.
 [Ici](https://sb427.github.io/NLP_CRIISEA/NLP_CRIISEA.html#/title-slide), une présentation en guise d'introduction.
 
 
-## Ressources en ligne :
+## Ressources en ligne
 
 [R et RStudio]{style="color:red"}
 
