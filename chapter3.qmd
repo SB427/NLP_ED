@@ -16,13 +16,13 @@ library(RColorBrewer)
 display.brewer.all()
 ```
 
-# Les données
+## Les données
 
 ```{r data, warning=FALSE}
 data <- read_csv("data/data_trustpilot_oiseaux.csv")
 ```
 
-# *Sentiment analysis*
+## *Sentiment analysis*
 
 On va réaliser une analyse du sentiment du corpus. Pour cela, on utilise le dictionnaire des sentiments et émotions NRC, car il est disponible dans 40 langues, dont le français. Il existe d'autres dictionnaires de sentiments (positif vs négatif), par exemple AFINN ou BING, ainsi que des dictionnaires thématiques (LIWC par exemple), mais ils sont en anglais ou payants, donc utilisables pour des corpus en anglais ou lorsqu'on dispose d'un budget. Les dernières évolutions du traitement en langage naturel des IA (transformers et autres, dont ChatGPT est un exemple), permettent d'autres approches très pertinentes, en utilisant le *machine learning*, mais cela va au-delà des objectifs de ce cours.
 
@@ -54,7 +54,7 @@ ggplot(e, aes(sentiment, nb))+
   coord_flip()
 ```
 
-## Les sentiments
+### Les sentiments
 
 Intéressons-nous d'abord aux sentiments :
 
@@ -89,6 +89,14 @@ ggplot(data = data, aes(x = valence, y= nbcar))+
   labs(title="Indicateur de valence", subtitle = "en fonction du nombre de caractères", caption="Données TrustPilot")+
   theme_minimal()
 
+```
+
+**Solution :**
+
+```{r}
+#| code-fold: true
+#| code-summary: "Solution"
+
 data<-data%>%
   mutate(nbcar=nchar(comments),
          expressivité = positive+negative)
@@ -98,10 +106,10 @@ ggplot(data = data, aes(x = expressivité, y= nbcar))+
   geom_smooth()+
   labs(title="Indicateur d'expressivité", subtitle = "en fonction du nombre de caractères", caption="Données TrustPilot")+
   theme_minimal()
-
 ```
 
-## Les émotions
+
+### Les émotions
 
 Regardons maintenant ce qu'il en est de la répartition des émotions :
 
@@ -141,7 +149,7 @@ ggplot(emo, aes(x=emotion, y=nb))+
   theme_minimal()+ scale_fill_manual(values=emocol)
 ```
 
-# Évolution du corpus dans le temps
+## Évolution du corpus dans le temps
 
 On va regarder comment les sentiments évoluent dans le temps. On doit tout d'abord créer une variable temporel dans notre jeu de données. Nous en avons déjà une, qui indique la date et l'heure à laquelle le commentaire a été posté. Nous allons la transformer pour regrouper les commentaires en fonction de l'année (on peut le faire pour les jours, les mois, les minutes, ...).
 
@@ -191,9 +199,9 @@ ggplot(gen_sent2,aes(x=year, y=mean,group=sentiment)) +
 
 Maintenant, on va s'intéresser aux mots.
 
-# Nuage de mots comparés
+## Nuage de mots comparés
 
-## En fonction des années
+### En fonction des années
 
 On refait les manipulations préliminaires :
 
@@ -224,7 +232,7 @@ textplot_wordcloud(dfmgp, comparison=TRUE, max_words = 200)
 
 ```
 
-## En fonction des sentiments
+### En fonction des sentiments
 
 Pour comparer en fonction des sentiments, il faut accéder au dictionnaire NRC (en français) (il y a des fonctions simplifiées pour les dictionnaires en anglais) :
 

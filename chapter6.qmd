@@ -1,0 +1,463 @@
+---
+title: "*Topic Analysis*"
+---
+
+```{r setup, include=TRUE, output=FALSE}
+
+# library(readxl)
+library(tidyverse)
+library(quanteda)
+library(quanteda.textstats)
+library(quanteda.textplots)
+library(RColorBrewer)
+library(topicmodels)
+# library(ggwordcloud)
+library(wordcloud)
+
+```
+
+## Introduction
+
+On va maintenant s'intéresser à la détection et à l'analyse de topics. Il existe de nombreux algorithmes pour cela. On va commencer avec le modèle original : le modèle LDA, pour Latent Dirichlet Allocation. Puis on s'intéressera à un de ses prolongements, le modèle STM (Structural Topic Modelling).
+
+-   Description du modèle LDA :
+
+L'idée est la suivante : un corpus est considéré comme une collection de documents. Chaque document est considéré comme étant composé d'un mélange de topics. Chaque topic est considéré comme étant composé d'un mélange de tokens. L'algorithme calcule par itération les probabilités d'appartenance des tokens aux topics et des topics aux documents, ce qui nous permet de visualiser la composition des sujets identifiés.
+
+![Le modèle LDA](lda.png)
+Un schéma explicatif est proposé par [H. Naushan](https://towardsdatascience.com/topic-modeling-with-latent-dirichlet-allocation-e7ff75290f8), en 2020.
+
+![](lda_scheme.jpeg)
+
+## Les données
+
+```{r data, warning=FALSE}
+data <- read_csv("data/data_trustpilot_oiseaux.csv")
+
+data<-data%>%mutate(text_id=paste0("text_", row_number(data$id)))
+
+```
+
+## *Topics Analysis*
+
+### Le modèle LDA avec topicmodels
+
+On travaille à partir du dfm. On doit transformer le format des données afin de l'injecter dans le modèle. On réduit le nombre de termes considérés, ce qui permet de réduire les temps de calcul et de trouver une solution convergente.
+
+Les résultats du modèle LDA sont très dépendants de la qualité du vocabulaire injecté. Plus on travaille ce vocabulaire, meilleurs sont les résultats. On va donc reprendre tout ce qu'on a fait jusqu'à présent pour améliorer les résultats de notre modèle : on récupère les annotations ; on filtre le vocabulaire pour ne garder que les noms, adjectifs et verbes ; on crée les collocations ; on filtre les occurrences trop et pas assez fréquentes.
+
+```{r}
+
+ann_token<-read_rds("data/annotation_oiseaux.rds")
+
+
+data<-ann_token%>%
+  filter(upos=="NOUN"|upos=="VERB"|upos=="ADJ"|upos=="ADV")%>%
+  group_by(doc_id)%>%
+  summarise(text=paste(lemma,collapse = " "))%>%
+  inner_join(data, join_by("doc_id"=="id"))
+
+corpus_new<-corpus(data, text_field = "text")
+toks<-tokens(corpus_new)%>%
+  tokens_replace(c("produire", "conformer","colir", "tre", "livrer", "n"), c("produit", "conforme","colis", "très", "livraison", "ne"))%>%
+  tokens_remove(c(".",","))
+
+colloc<-textstat_collocations(toks, min_count = 10, tolower = TRUE)
+
+toks<-tokens_compound(toks, pattern = colloc[colloc$z>7,])
+
+
+dfm_new<-dfm(toks)%>%
+  dfm_trim(min_termfreq = 0.6, termfreq_type = "quantile",
+           max_docfreq = 0.1, docfreq_type = "prop")
+dtm_new <- convert(dfm_new, to = "topicmodels")
+
+set.seed(1234)
+lda <- LDA(dtm_new, k = 5)
+
+#On regarde les résultats
+terms(lda,10)
+# topics(lda)
+
+corpus_new["996"]
+corpus_new["995"]
+corpus_new["999"]
+
+term<-as_tibble(terms(lda,25))%>%
+  mutate(rank=as.numeric(row.names(.)))%>%
+  pivot_longer(-rank, names_to = "topic",values_to = "term")
+
+ggplot(term, aes(x=topic, y= rank, group =  term , label = term)) + 
+  scale_y_reverse() +
+  geom_text(aes(color=topic,size=8/log(rank)))+
+  theme_minimal()+
+  scale_color_hue()+
+  guides(color="none",size="none")
+
+```
+
+### Déterminer le nombre de topics optimal
+
+Le modèle LDA fonctionne à partir d'un nombre de topics donné. La question est donc de savoir quel est le nombre de topics optimal pour décrire notre corpus. Heureusement, des personnes ont créé des fonctions et des procédures pour nous aider dans cette quête. L'idée est de calculer différents modèles pour différents nombres de topics, et de comparer la qualité des résultats. La procédure ci-dessous est en deux parties :
+
+-   Tout d'abord, on compare la qualité de différents indicateurs sur un grand nombre de modèles, pour aboutir à une liste de quelques solutions à comparer plus en détail (de 3 à 10).
+
+-   Ensuite, on compare les résultats de la liste réduite de modèles, pour déterminer lequel a la meilleure distribution des topics entre les documents. La distribution recherchée est celle qui distingue le plus les documents en fonction des topics, tout en étant à droite de l'estimation d'une répartition uniforme des documents entre les topics. Le critère de parcimonie nous invite à choisir la solution avec le moins grand nombre de topics, en cas de résultats comparables.
+
+```{r proc_topic}
+##Etape 1 : les meilleures solutions
+library(ldatuning)
+library(magrittr)
+
+result <- FindTopicsNumber(dtm_new,
+                           topics = c(seq(from = 2, to = 9, by = 1), seq(10, 25, 5)),
+                           metrics = c("Griffiths2004", "CaoJuan2009", "Arun2010", "Deveaud2014"),
+                           method = "Gibbs",
+                           control = list(seed = 0:4,
+                                          nstart = 5,
+                                          best = TRUE),
+                           mc.cores = 4L,
+                           verbose = TRUE
+                           )
+
+FindTopicsNumber_plot(result)
+
+
+##Etape 2 : comparaison des solutions
+para <- tibble(k = c(6,7,8,9,10))
+lemma_tm <- para %>%
+  mutate(lda = map(k,
+                   function(k) LDA(
+                     k=k,
+                     x=dtm_new,
+                     method="Gibbs",
+                     control=list(seed = 0:4,
+                                  nstart = 5,
+                                  best = TRUE)
+                     )
+                   )
+         )
+
+lemma_tm <- lemma_tm %>%
+  mutate(lda_gamma = map(.x=lda,
+                         .f=tidytext::tidy,
+                         matrix="gamma"))
+lemma_tm %>%
+  unnest(lda_gamma) %>%
+  group_by(k, document) %>%
+  arrange(desc(gamma)) %>%
+  slice(1) %>%
+  ungroup() %>%
+  ggplot(aes(x=gamma, fill=factor(k))) +
+  geom_histogram(bins = 20) +
+  scale_fill_discrete(name = "Number of\nTopics") +
+  xlab("maximum gamma per document") +
+  facet_wrap(~k) +
+  geom_vline(aes(xintercept = 1/k),
+             tibble(k=lemma_tm %$% unique(k)),
+             color="darkred")
+
+
+```
+
+### Représentation graphique
+
+À partir de la solution retenue aux étapes précédentes, on va représenter les différents topics :
+
+```{r lda_graph, message=FALSE}
+set.seed(1234)     #pour la réplicabilité des résultats
+lda <- LDA(dtm_new, k = 7)
+
+lda_res<-as.data.frame(terms(lda, 25))%>%
+  rename(nom1='Topic 1',nom2='Topic 2', nom3='Topic 3', nom4='Topic 4', nom5='Topic 5',nom6='Topic 6',nom7='Topic 7')%>%
+  mutate(rank=as.numeric(row.names(.)))%>%
+  pivot_longer(-rank, names_to = "topic", values_to = "term")
+
+ggplot(lda_res, aes(x=topic, y= rank, group =  term , label = term)) + 
+  scale_y_reverse() +
+  geom_text(aes(color=topic,size=8/log(rank)))+
+  theme_minimal()+
+  scale_color_hue()+
+  guides(color=FALSE,size=FALSE)
+
+
+```
+
+## *Theory-Driven LDA*
+
+Ici, on va forcer les *topics* grâce à la réalisation d'un dictionnaire. C'est utile quand on cherche à appliquer une théorie qui nous dit ce que l'on cherche à trouver. Par exemple, ici on s'intéresse aux attributs clés des logements oiseaux. Dans d'autre cas, on pourra chercher à expliquer les notes en fonction de *topics* qui reflètent les attributs clés. On peut réaliser le dictionnaire a priori ou après différentes analyses de *topics*, de co-occurences, de fréquence, etc.
+
+On commence par créer un dictionnaire.
+
+```{r dict}
+
+dict<-dictionary(list(produit=c("produit*", "cage","oiseau","graine*"),
+                      livraison=c("livr*","recepti*","délai"),
+                      commande=c("command*","emballage","envoi*"),
+                      site="*site*",
+                      prix=c("*prix*","frais_port")
+                      ))
+dict
+head(dfm_lookup(dfm_new,dict))
+```
+
+On utilise ensuite le package 'seededlda' pour lancer le modèle semi-supervisé.
+
+```{r seededlda}
+library(seededlda)
+
+set.seed(1234)
+slda<-textmodel_seededlda(dfm_new, dict, residual = T)
+terms(slda,20)
+
+```
+
+### Expliquer les notes en fonction des topics
+
+Maintenant, nous cherchons à voir la répartition des *topics* dans les notes, pour comprendre si certains *topics* contribuent plus ou moins à la satisfaction.
+
+```{r note}
+
+theta<-as.data.frame(slda$theta)%>%mutate(doc_id=as.numeric(row.names(.)))
+
+data<-inner_join(data, theta)
+
+foo<-data%>%select(note, produit, livraison, commande, site,prix, other)%>%
+  pivot_longer(-note, names_to = "topic", values_to = "value")
+
+ggplot(foo,aes(x=note, y=value, group=topic))+
+  geom_bar(position="fill",stat="identity", aes(fill=topic))+
+  scale_fill_brewer(palette="Spectral")+
+  theme_minimal()
+
+
+#Pour finir, une petite régression !
+fit<-lm(note~produit+livraison+commande+site+prix, data =data)
+summary(fit)
+
+
+```
+
+## Le modèle STM
+
+La Modélisation Thématique Structurelle est un prolongement du modèle LDA développé ci-dessus. Permettant de parvenir aux mêmes types de résultats de regroupements thématiques par plongement lexical, cette dernière se distingue dans le sens où elle permet d’associer d’autres variables, ou méta-données, au corpus traité afin de prendre en compte les relations de leurs modalités au contenu. Ainsi, elle crée la notion de prévalence d’un topic, qui permet de prendre en compte sa fluctuation en fonction de la propre évolution de la covariance des éléments d’un même mélange.
+
+
+![Le modèle STM](stm.png)
+
+
+### Choisir le nombre de topics : approche par comparaison
+
+
+
+Tout d'abord, on teste plusieurs modèles pour découvrir le nombre de _topics_ optimal. 4 métriques sont calculés :
+  * _held-out likelihood_ : la probabilité d'apparition des mots au sein d'un document après avoir enlevé ces mots du document lors de l'étape d'estimation (à maximiser) ;
+  * _residuals_ : test de la sur-dispersion des résidus ; si les résidus sont sur-dispersés, il est possible qu'il existe une meilleure solution à plus de *topics*  (à minimiser) ;
+  * _semantic coherence_ : la cohérence sémantique est maximisée quand les mots les plus probables d'un *topic* apparaissent fréquemment ensemble (o-occurrences)  (à maximiser) ;
+  * _lower bound_ : permet de suivre la convergence du modèle  (à minimiser).
+  
+  
+On lance l'estimation sur 3 modèles différents, puis on compare les métriques.
+
+```{r}
+dfm_stm <- convert(dfm_new, to = "stm")
+
+library(stm)
+
+#test de différents modèles
+kresult2 <- searchK(dfm_stm$documents, dfm_stm$vocab, K = c(7,10,25), prevalence =~ s(note), data = dfm_stm$meta,verbose = FALSE)
+
+
+#afficher les paramètres calculés
+plot(kresult2)
+
+```
+
+### Le modèle final
+
+
+Une fois le nombre de *topics* choisi, il ne reste plus qu'à lancer le modèle et interpréter ses résultats. L'interprétation passe par 3 étapes:
+  * interpréter les *topics*,
+  * regarder la prévalence des *topics* en fonction des variables de prévalence retenues,
+  * analyser la corrélation entre les *topics*
+
+Nous testons ici une solution à 10 topics. Tout d’abord, nous lançons le modèle et nous regardons la distribution des topics en fonction de leur cohérence sémantique et de leur exclusivité (à partir de la mesure FREX).
+
+```{r}
+#nb de topics retenu
+k=10
+# la spécification du modèle
+set.seed(2020)
+model.stm <- stm(dfm_stm$documents, 
+                 dfm_stm$vocab, 
+                 K = k, max.em.its = 25,
+                 data = dfm_stm$meta, 
+                 init.type = "Spectral", 
+                 prevalence =~ note,
+                 interactions = FALSE,
+                 verbose = FALSE) # this is the actual stm call
+
+
+#la qualité des topic
+
+topicQuality(model.stm , dfm_stm$documents, xlab = "Semantic Coherence",  ylab = "Exclusivity", M = k)
+
+```
+
+
+### Interpréter les topics
+
+La première étape de l'exploration consiste à analyser les mots les plus associés à chaque *topics*. Il existe 4 métriques d'association différentes :
+  * *Highest Prob* : les mots avec la plus forte probabilité ;
+  * *FREX* : pondération des mots selon leur fréquence d'apparition globale et leur appartenance à des documents spécifiques ;
+  * *Lift* : pondération par l'occurrence des mots dans les autres *topics*, ce qui donne plus d'importance aux mots spécifiques au *topic* examiné ;
+  * *Score* : transformation de *Lift* par le log.
+
+Ici, on affiche les résultats pour les *topics* 1, 5 et 10 et on représente les différentes métriques graphiquement :
+
+```{r}
+labelTopics(model.stm, c(1,5,10))
+plot(model.stm, type = "summary", labeltype="prob",text.cex = 0.7,n=7)
+
+plot(model.stm, type = "summary", labeltype="score",text.cex = 0.7,n=5)
+
+plot(model.stm, type = "summary", labeltype="lift",text.cex = 0.7,n=5)
+
+plot(model.stm, type = "summary", labeltype="frex",text.cex = 0.7,n=5)
+
+
+```
+
+
+On peut également représenter les *topics* sous forme de nuage de mots. La première proposition, ci-dessous en bleu, repose sur la probabilité d'appartenance des termes aux *topics*, la seconde, en rouge, représente les mots en fonction de l'occurrence des *topics* dans les documents.  
+
+```{r 1519}
+par(mfrow = c(3,5) , mar = c(0,0,0,0))
+for (i in seq_along((1:k)))
+{
+  cloud(model.stm,scale=c(2,.25) ,topic = i, type ="model", max.words = 50, colors="darkblue", random.order=FALSE, )
+  text(x=0.5, y=1, paste0("topic",i))
+}
+
+
+par(mfrow = c(3,5) , mar = c(0,0,0,0))
+for (i in seq_along((1:k)))
+{
+cloud(model.stm, topic = i,scale=c(2,.25) ,type = c("model","documents"), dfm,thresh = 0.1, max.words = 50, colors="firebrick")
+   text(x=0.5, y=1, paste0("topic",i))
+}
+
+```
+
+On peut aussi s'intéresser à représenter les contrastes dans les *topics* :
+
+```{r 1520}
+
+plot(model.stm, type="perspectives", topics=c(5,10))
+
+```
+Enfin, on peut s'intéresser aux documents qui contribuent aux *topics*, à travers la fonction 'findThoughts', et à les représenter graphiquement. Pour cela, on a besoin d'un vecteur contenant les textes, dans le même ordre que celui fournit au modèle STM. Ici, on utilise le vecteur 'title' créé dans les premières manipulations des données.
+
+
+```{r 1521}
+
+data_stm<-data%>%filter(text_id%in%dfm_stm$meta$text_id)
+
+
+thoughts3 <- findThoughts(model.stm,texts=data_stm$comments ,n = 4,
+ topics = 3)$docs[[1]]
+thoughts10 <- findThoughts(model.stm, texts = data_stm$comments, n = 3,
+topics = 10)$docs[[1]]
+
+
+
+par(mfrow = c(1, 2), mar = c(0.5, 0.5, 1, 0.5))
+plotQuote(thoughts3, width = 50,text.cex = 0.8, main = "Topic 3")
+plotQuote(thoughts10, width = 50,text.cex = 0.8, main = "Topic 10")
+
+```
+### Evolution en fonction de la variable de prévalence
+
+Ici, on représente l'évolution de la présence des *topics* en fonction de notre variable de prévalence, l'année de parution. D'abord, on calcule l'effet de l'année pour chaque *topic*, et ensuite on fait notre représentation graphique.
+
+```{r 1522}
+
+model.stm.labels <- labelTopics(model.stm, 1:k) #on récupère la description des topics pour les titres des graphiques
+dfm_stm$meta$datum <- as.numeric(dfm_stm$meta$note) #on transforme l'année en variable continue
+model.stm.ee <- estimateEffect(1:k ~ s(`datum`), model.stm, meta = dfm_stm$meta) #on estime l'effet de l'année pour chaque topic
+
+summary(model.stm.ee,topics=3) #résultat pour le topic 13
+
+
+#représentation graphique
+par(mfrow = c(3,5) , mar = c(1,0,2,0))
+for (i in seq_along((1:k)))
+{
+  plot(model.stm.ee, "datum", method = "continuous", topics = i, main = paste0(model.stm.labels$score[i,1:4], collapse = "-"), printlegend = T)
+}
+
+```
+
+### Corrélation entre les *topics*
+
+Pour finir, on s'intéresse à la corrélation entre les *topics*. 
+
+```{r 1523}
+library(reshape2)
+#On crée les titres/noms des topics
+b<-NULL
+for (i in seq_along((1:k)))
+{
+  a<-paste0(model.stm.labels$score[i,1:3], collapse = " ")
+  a<-paste("Topic",i,a)
+b<-rbind(b,a)
+}
+label<-as.data.frame(b)
+label
+
+topicor<-topicCorr(model.stm, method = "simple",verbose = TRUE) # calcul des corrélations
+adjmatrix <-topicor[[3]] #on récupère les corrélations
+
+#calcul des theta moyens par topic
+theta <-model.stm[[7]]
+thetat<-melt(theta)
+thetat<-thetat %>%group_by(Var2)%>%summarise(mean=mean(value))
+
+library(igraph)
+#création du graphe des corrélations
+g<-graph_from_adjacency_matrix(adjmatrix, mode = "lower", weighted = TRUE, diag = FALSE)
+g <- delete.edges(g, E(g)[ abs(weight) < 0.05])
+curve_multiple(g)
+set.seed(2021)
+plot(g,
+     # layout=layout_with_fr,  
+     margin = c(0, 0, 0, 0),
+     edge.width=abs(E(g)$weight)*15,
+     edge.color=ifelse(E(g)$weight > 0, "grey60","red"),
+     vertex.label=label$V1,
+     vertex.color = adjustcolor("pink2", alpha.f = .2),vertex.label.cex=0.7, vertex.size=400*thetat$mean, vertex.frame.color= "white"
+     )
+
+```
+
+Et en bonus, un petit graphique pour représenter les mots les plus contributifs aux *topics* :
+
+```{r 1524}
+library(broom)
+td_beta <- tidy(model.stm,log=FALSE)
+
+td_beta<-td_beta %>% 
+  mutate(topic=as.factor(topic))%>%
+  mutate(topic=`levels<-.factor`(td_beta$topic,label$V1))
+
+td_beta %>%
+    group_by(topic) %>%
+    top_n(15, beta) %>%
+    ungroup() %>%
+    ggplot(aes(reorder(term,beta), beta)) +
+    geom_col(fill="firebrick") +theme_minimal()+
+    facet_wrap(~ topic, scales = "free") + labs(x=NULL)+
+    coord_flip()
+
+```
+

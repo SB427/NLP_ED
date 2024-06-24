@@ -18,7 +18,7 @@ library(RColorBrewer)
 
 Dans un premier temps, nous allons tout simplement charger la base de données de travail puis la décrire. Ensuite, nous créerons un corpus, le visualisons. Puis nous effectueront quelques analyses liminaires, avant de voir les pré-traitements à réaliser sur le corpus.
 
-## Les données
+### Les données
 
 ```{r data}
 #On charge les données, stockées dans un fichier csv
@@ -33,7 +33,7 @@ summary(data)
 
 ```
 
-## Premières analyses des données
+### Premières analyses/visualisations des données
 
 Avant de s'intéresser au contenu des commentaires, explorons la structure des données. On va regarder la distribution des commentaires et des notes dans le temps, et s'intéresser à la longueur des avis clients.
 
@@ -126,7 +126,7 @@ data%>%
 
 ```
 
-# Création du corpus et premières observations du corpus
+## Création du corpus et premières observations du corpus
 
 Tout d'abord, nous transformons le jeu de données en corpus. La variable qui contient le texte est "comments", les autres variables vont devenir des métadonnées du corpus, c'est-à-dire des variables associées à chaque texte. Cela sera utile par le suite pour faire des analyses comparatives entre les textes suivant différentes variables (le temps en particulier, mais pas seulement).
 
@@ -167,7 +167,7 @@ textplot_wordcloud(dfm) #nuage de mots
 
 Pour conclure sur cette première approche du corpus, nous voyons que nos analyses sont gếnées par la présence de la ponctuation et de plein de petits mots "vides de sens" (les articles par exemple). C'est pourquoi nous allons nettoyer le corpus pour avoir une meilleure vision de ce qu'il contient.
 
-# Nettoyage du corpus
+## Nettoyage du corpus
 
 Le nettoyage du corpus pour les analyses se fait lors de la transformation en tokens. Nous allons ajouter des options pour supprimer la ponctuation, les chiffres et les stopwords (les mots qui n'apportent pas de sens sémantique mais permettent l'articulation du discours).
 
@@ -222,7 +222,7 @@ textstat_frequency(dfm, n=20)
 
 ```
 
-# Filtrer le corpus des termes trop fréquents
+## Filtrer le corpus des termes trop fréquents
 
 Nous allons filtrer les mots qui sont présents plus de 500 fois dans le corpus.
 
@@ -247,7 +247,7 @@ textstat_frequency(dfm_rem, n=20)
 
 ```
 
-# La loi de Zipf
+## La loi de Zipf
 
 Vérifions la proposition de la loi de Zipf, selon laquelle la fréquence d'apparition d'un terme est inversement proportionnel à son rang.
 
@@ -262,11 +262,11 @@ ggplot(zipf, aes(rank, frequency))+
   labs(title = "Observation de la loi de Zipf",x="log (rang)",y="log (fréquence)")
 ```
 
-# Mesures de fréquence
+## Mesures de fréquence
 
 On s'est pour l'instant intéressé uniquement aux termes les plus fréquents dans un corpus. On a vu comment éliminer les termes trop fréquents pour qu'ils nous apportent de l'information. Pour l'analyse de topics, il nous faut prendre un autre angle d'attaque : afin de détecter les sujets abordés dans un corpus, on ne peut se contenter d'observer les mots les plus fréquents, il faut s'intéresser aux termes dont la fréquence dans l'ensemble du corpus est faible, mais qui contribuent fortement à différencier les éléments du corpus entre eux (les documents). On utilise pour cela une mesure de fréquence pondérée : la *tf-idf* pour *term frequency - inverse document frequency* qui permet d'accorder plus de poids aux termes les plus discriminants du corpus. $tf-idf= \frac{occurrence\ du\ mot\ dans\ le\ document }{nombre\ de\ mots\ dans \ le \ document}* log (\frac{nombre\ de\ documents\ dans\ le\ corpus} {nombre\ de \ documents\ dans\ lequel\ le\ mot\ apparait})$
 
-## Pondération tf-idf
+### Pondération tf-idf
 
 On commence par reprendre nos manipulations précédentes : création de corpus, élimination des stopwords, constitution de bi- ou tri- grammes. On applique ensuite la pondération tf-idf.
 
@@ -295,7 +295,7 @@ display.brewer.all()
 
 ```
 
-# Comprendre le sens des termes
+## Comprendre le sens des termes
 
 On peut visualiser un ou plusieurs termes dans leur contexte, afin d'avoir une meilleure compréhension de leur sens. Pour cela on utilise la fonction "kwic" pour key word in context, à partir de l'objet tokens :
 

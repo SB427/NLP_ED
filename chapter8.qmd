@@ -1,0 +1,170 @@
+---
+title: "LLM"
+---
+
+```{r setup}
+
+library(tidyverse)
+library(reticulate)
+
+data <- read_csv("data/data_trustpilot_oiseaux.csv")
+
+```
+
+## Introduction
+
+Pour finir ce cours, on va s'intéresser aux derniers développements du NLP, les LLMs (Large Langage Models), fondés sur une architecture de Transformers et du mécanisme de l'attention.
+
+![transformers](transformers.png)
+
+
+L'idée est d'entraîner un modèle de langue, sur de très larges corpus, pour ensuite l'utiliser dans des tâches spécifiques. 
+
+![Exemples](multitaches.png)
+
+Il ne s'agit pas ici de réentraîner des modèles, ce qui est une approche tout à fait pertinente lorsque l'on est face à des corpus au langage spécifique, mais d'utiliser les outils existants directement disponibles.
+
+Pour trouver le bon modèle à utiliser, il existe [Hugging Face](https://huggingface.co/). La plupart des éléments de code sont en python, mais il commence à exister des implémentations en R.
+
+Le problème véritable repose sur les temps de calcul et la puissance disponible. On recommande d'avoir accès à un GPU, ce qui permet de considérablement raccourcir le temps des traitements. Les outils en R n'ont pas encore implémenté le recours au GPU, et nos ordis portables n'en ont pas forcément. On peut avoir recours au cluster de calcul de son université, ou utiliser les service de Google ou OpenAI (souvent, moyennant finance).
+
+On va utiliser du code en python et du code en R pour analyser les résultats. On travaille sur un tout petit corpus, pour limiter les temps de calcul. 
+On pourra garder un oeil sur le package R ['text'](https://www.r-text.org/index.html) qui propose beaucoup d'outils mais est encore en construction.
+
+(Pour redémarrer la session R : command/ctrl + shift + F10)
+
+
+
+## BERTopic
+
+Un classique du genre : [BERTopic](https://maartengr.github.io/BERTopic/index.html)
+
+```{python}
+
+from bertopic import BERTopic
+from bertopic.representation import KeyBERTInspired
+
+import pandas as pd
+
+df = r.data
+print(df)
+topic_model = BERTopic(language="multilingual")
+topics, probs = topic_model.fit_transform(df['comments'])
+topic_model.get_topic_info()
+topic_model.get_topic(8)
+topic_model.get_topic_freq().head()
+topic_model.get_document_info(df['comments'])
+topic_model.find_topics("réclamation")
+topic_model.generate_topic_labels()
+
+topic_model.visualize_topics()
+topic_model.visualize_heatmap()
+
+
+```
+
+
+
+## Zero-Shot Classification
+
+On utilise python pour faire la classification (ici, les sentiments) :
+
+```{python}
+import torch
+print(torch.__version__)
+print(torch.cuda.is_available())
+torch.zeros(1).cuda()
+
+from transformers import pipeline
+classifier = pipeline("zero-shot-classification", model="mtheo/camembert-base-xnli", device=-1)
+
+# load in pandas and numpy for data manipulation
+import pandas as pd
+import numpy as np
+
+
+data = pd.read_csv("data/data_trustpilot_oiseaux.csv")
+
+df=pd.DataFrame(data.iloc[10:20])
+
+
+labels = ["positif", "négatif", "neutre"]
+
+# Fonction pour prédire la classification zero-shot pour un texte donné
+def predict_sentiment_for_text(text, text_labels):
+    result = classifier(text, text_labels, multi_label=True)
+    label_scores = {label: score for label, score in zip(result['labels'], result['scores'])}
+    return label_scores
+
+# Appliquer la fonction à la colonne de texte et stocker les résultats dans une nouvelle colonne
+
+df['sentiment_results'] = df.apply(lambda row: {'id': row['id'], **predict_sentiment_for_text(row['comments'], labels)}, axis=1)
+# Convertir les résultats de dictionnaire en colonnes séparées
+results_df = pd.json_normalize(df['sentiment_results'])
+
+final_df = pd.merge(df, results_df, on='id')
+
+final_df.to_csv('data/test_ZS_result.csv')
+
+
+```
+
+On récupère les résultats dans R et on regarde ce que ça donne.
+
+```{r}
+df<-py$final_df
+
+df%>%select(positif, négatif, neutre)%>%pivot_longer(everything())%>%
+  ggplot()+
+  geom_violin(aes(x=name, y=value, fill=name), show.legend = F, scale = "width", trim=F)+
+  coord_flip()+
+  labs(x=NULL, y=NULL)
+
+df%>%select(positif, négatif, neutre)%>%pivot_longer(everything())%>%
+  ggplot()+
+  geom_boxplot(aes(name, value, fill=name), show.legend = F)+
+  coord_flip()+
+  labs(x=NULL, y=NULL)
+
+df2<-df%>%select(note, positif, négatif, neutre)%>%
+  pivot_longer(-note, names_to = "topic", values_to = "value")
+
+ggplot(df2,aes(x=note, y=value, group=topic))+
+  geom_bar(position="fill",stat="identity", aes(fill=topic))+
+  scale_fill_brewer(palette="Spectral")+
+  theme_minimal()
+
+
+```
+
+
+
+## Génération de texte
+
+Un exemple avec [gpt2](https://medium.com/@majd.farah08/generating-text-with-gpt2-in-under-10-lines-of-code-5725a38ea685)
+
+```{python}
+
+import torch
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
+
+# initialize tokenizer and model from pretrained GPT2 model from Huggingface
+tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
+model = GPT2LMHeadModel.from_pretrained('gpt2', pad_token_id=tokenizer.eos_token_id)
+
+# sentence
+sequence = "What is AI?"
+# encoding sentence for model to process
+inputs = tokenizer.encode(sequence, return_tensors='pt')
+
+# generating text
+outputs = model.generate(inputs, max_length=200, do_sample=True, num_beams=5, no_repeat_ngram_size=2, early_stopping=True)
+
+# decoding text
+text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+# printing output
+print(text)
+
+
+```
+

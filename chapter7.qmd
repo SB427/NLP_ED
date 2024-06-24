@@ -1,0 +1,236 @@
+---
+title: "Vectorisation"
+---
+
+```{r setup, include=TRUE, output=FALSE}
+
+# library(readxl)
+library(tidyverse)
+library(quanteda)
+library(quanteda.textstats)
+library(quanteda.textplots)
+library(RColorBrewer)
+library(topicmodels)
+# library(ggwordcloud)
+library(wordcloud)
+
+```
+
+## Introduction
+
+C’est sans doute l’idée la plus novatrice que l’approche computationnelle du langage a apporté ces 10 dernières années. Le modèle word2vec de Mikolov(2013) en est une première version, d’autres ont apporté des amélioration comme le modèle Glove.
+
+L’idée fondamentale est qu’on peut représenter des mots dans un espace de grande dimension par des vecteurs. Ce qui importe c’est de conserver la relation entre mots dans cet espace. Deux mots très corrélés, au sens de leur cooccurences, doivent l’être avec la même intensité dans cet espace. Admettant que le cosinus de l’angle entre deux vecteurs est équivalent à leur corrélation, on comprend aisément que la vectorisation consiste à identifier un jeu de coordonnées, les paramètres des vecteurs mots, en connaissant les angles qu’is forment entre eux.
+
+Pour estimer les coordonnée des vecteurs deux méthodes peuvent être employée simultanéement.
+
+  -  Les mots observés, dont on peut prédire le contexte (Skip-gram)
+
+  - Les éléments du contexte observés, dont on peut prédire le mot (CBOW)
+
+L’idée de plongement lexical tient alors dans cette dynamique double d’identification et de rattachament des éléments textuels ensembles, selon différentes méthodes de vraisemblance/mesure.
+
+![Word Embeddings](skipgramCbow.jpg)
+
+Le caractère remarquable de la méthode c’est qu’il est posible d’opérer des opérations algébriques, l’exemple canonique est celui de : reine = Roi+Homme - Femme
+
+![Exemple canonique](wordvector.png)
+Pour la mise en oeuvre on emploie le package WordVectors de BenJamin Schmidt.
+
+## Les données
+
+On repart du vocabulaire préparé au chapitre 6. On lemmatise, on ne garde que les mots signifiants. On créera les n-gramms directement dans la vectorisation. On sauvegarde le tout en format .txt pour pouvoir ensuite l'injecter dans le modèle.
+
+```{r data, warning=FALSE}
+data <- read_csv("data/data_trustpilot_oiseaux.csv")
+
+data<-data%>%mutate(text_id=paste0("text_", row_number(data$id)))
+
+ann_token<-read_rds("data/annotation_oiseaux.rds")
+
+
+data<-ann_token%>%
+  filter(upos=="NOUN"|upos=="VERB"|upos=="ADJ"|upos=="ADV")%>%
+  group_by(doc_id)%>%
+  summarise(text=paste(lemma,collapse = " "))%>%
+  inner_join(data, join_by("doc_id"=="id"))
+
+corpus_new<-corpus(data, text_field = "text")
+toks<-tokens(corpus_new)%>%
+  tokens_replace(c("produire", "conformer","colir", "tre", "livrer", "n"), c("produit", "conforme","colis", "très", "livraison", "ne"))%>%
+  tokens_remove(c(".",","))
+
+foo1<-data.frame(
+  id = seq_along(toks),
+  text = sapply(toks, paste, collapse = " "),
+  row.names = NULL
+)
+
+#on génère le fichier de ces textes "purifiés"
+write.table(foo1, file="data/textes.txt")
+
+```
+
+## Vectoriser le texte
+
+On commence par préparer le texte pour l'algorithme, avec le package 'wordVectors'.
+
+```{r}
+# install.packages("remotes")
+# remotes::install_github("bmschmidt/wordVectors")
+library(wordVectors)
+
+#Nettoyage des tweets et identification des n-grammes en vue d'entraîner le modèle
+prep_word2vec(origin="data/textes.txt",destination="data/textes_vec.txt",lowercase=T,bundle_ngrams=3)
+
+
+```
+
+On entraîne ensuite le modèle.
+
+```{r}
+#Création et entraînement du modèle vectoriel
+
+model = train_word2vec("data/textes_vec.txt",
+                       "data/textes.bin",
+                       vectors=200,threads=3,
+                       window=5,
+                       iter=10,negative_samples=0,
+                       force=TRUE, 
+                       min_count=30)
+```
+
+Nous avons un vocabulaire de 192 pour 29 198 mots dans le fichier d'entraînement. Il se présente sous la forme d'un tableau de 192 lignes et 200 colonnes.
+
+## Exploiter les résultats
+
+Pour exploiter cette représentation, une première manière de faire est de rechercher dans le corpus les termes les plus associés à un terme cible. Quel est son contexte le plus proche ? Des fonctions pratiques sont proposées dans le package. la principale closest_to qui permet de selectionner les termes les plus proches, en termes de cosinus, du vecteur cible.
+
+Dans l’exemple suivant, on cherche à mieux saisir le concept de “livraison”. On examine les trentes termes les plus proches. 
+
+```{r}
+foo<-model %>% 
+  closest_to(~"livraison",31)%>%
+  filter(word!="livraison")%>%#on choisit les 30 termes les plus proches, sauf livraison
+  rename(similarity=2)
+
+ggplot(foo, aes(x=reorder(word,similarity),y=similarity))+
+  geom_point(col="black",size=3)+
+  coord_flip()+
+  ggtitle("N-grammes similaires à livraison")
+
+
+```
+
+**Exercice** : répéter l'opération sur "perroquet"
+
+```{r}
+#| code-fold: true
+#| code-summary: "Solution"
+
+foo<-model %>% 
+  closest_to(~"perroquet",31)%>%
+  filter(word!="perroquet")%>%#on choisit les 30 termes les plus proches, sauf livraison
+  rename(similarity=2)
+
+ggplot(foo, aes(x=reorder(word,similarity),y=similarity))+
+  geom_point(col="black",size=3)+
+  coord_flip()+
+  ggtitle("N-grammes similaires à perroquet")
+
+```
+
+On peut affiner les concepts en faisant la somme de plusieurs mots.
+
+```{r}
+foo<-model %>% 
+  wordVectors::closest_to(~("perroquet"+"perruche"),32)%>%
+  filter(word!="perroquet"&word!="perruche")%>%#on choisit les 30 termes les plus proches, sauf livraison
+  rename(similarity=2)
+
+ggplot(foo, aes(x=reorder(word,similarity),y=similarity))+
+  geom_point(col="black",size=3)+
+  coord_flip()+
+  ggtitle("N-grammes similaires à perroquet")
+
+```
+Et on peut également soustraire des concepts les uns aux autres.
+
+```{r}
+foo<-model %>% 
+  wordVectors::closest_to(~("problème"-"livraison"),32)%>%
+  rename(similarity=2)
+
+ggplot(foo, aes(x=reorder(word,similarity),y=similarity))+
+  geom_point(col="black",size=3)+
+  coord_flip()+
+  ggtitle("N-grammes similaires à problème, sans la livraison")
+
+```
+
+## Créer des groupes
+
+On peut aussi créer des groupes. On verra la méthode classique de clustering et la méthode [t-sne](https://fr.wikipedia.org/wiki/Algorithme_t-SNE).
+
+### Clustering
+
+```{r}
+q_words = c("livraison", "problème")
+term_set = lapply(q_words, 
+                  function(q_word) {
+                    nearest_words = model %>% closest_to(model[[q_word]],80)
+                    nearest_words$word
+                  }) %>% unlist
+subset = model[[term_set,average=F]]
+
+subset1<-as.data.frame(subset@.Data)
+
+# un calcul de dissimilarité sur la base des cosinus
+#la fonction habituel dist ne le permetpas
+Matrix <- as.matrix(subset1)
+sim <- Matrix / sqrt(rowSums(Matrix * Matrix))
+sim <- sim %*% t(sim)
+#on transforme en distance la similarité cosinus, celle ci varie de 0 à 2.
+D_sim <- as.dist(1 - sim)
+
+
+#un clustering hiérarchique avec 10 groupes
+
+clus<-hclust(D_sim)
+groupes<- cutree(clus,k=10)
+library(ggdendro)
+ggdendrogram(clus, rotate=TRUE ,type = "triangle")
+
+
+ddata <- dendro_data(clus, type = "triangle")
+ggplot(segment(ddata)) + 
+  geom_segment(aes(x = x, y = y, xend = xend, yend = yend)) + 
+  coord_flip()+
+    geom_text(data = ddata$labels, 
+              aes(x = x, y = y, label = label), size = 2, vjust = 0)
+```
+
+### t-sne
+
+```{r}
+library(Rtsne)
+library(RColorBrewer)
+# run Rtsne with default parameters
+set.seed(57)
+rtsne_out <- Rtsne(as.matrix(subset), perplexity=25)
+# plot the output of Rtsne
+#jpeg("fig.jpg", width=2400, height=1800)
+color.vec = c("#556270", "#4ECDC4", "#1B676B", "#FF6B6B", "#C44D58", "seagreen1", "seagreen4", "slateblue4", "firebrick", "Royalblue")
+
+#des manip pour associer les groupe du clustering aux termes et à la leur coordonnée dans tsne.
+groupes<-as.data.frame(groupes)
+groupes$word<-rownames(groupes)
+terms<-as.data.frame(rownames(subset))
+terms$word<-terms[,1] 
+terms<-terms %>% left_join(groupes, by = "word")
+plot(rtsne_out$Y, t='n')
+#count(terms, clus)$n[2]
+text(rtsne_out$Y, labels=rownames(subset),cex=0.8,col=color.vec[terms$groupes])
+
+```
+

@@ -17,8 +17,8 @@ Ici, on commence simplement avec quelques manipulations pour comprendre l'enviro
 
 -   Créer un document script (.R) : pour simplement éditer du code
 -   Créer un document quarto (.qmd) : pour mixer du code et du texte
--   Commenter du code
--   Afficher de l'aide sur une fonction
+-   Commenter du code : #vous permet d'écrire un commentaire dans le code
+-   Afficher de l'aide sur une fonction : F1 ou lancer la ligne ?'nom de la fonction'
 
 
 ## Charger des données
