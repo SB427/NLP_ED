@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>NLP avec R pour les sciences sociales - 5&nbsp; Topic Analysis</title>
+<title>NLP avec R pour les sciences sociales - 5&nbsp; Rappel sur les pré-traitements</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./webscraping.html" rel="next">
+<link href="./chapter6.html" rel="next">
 <link href="./chapter4.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter4.html">Niveau 2 : Approfondissements</a></li><li class="breadcrumb-item"><a href="./chapter5.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title"><em>Topic Analysis</em></span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter5.html">Niveau 2 : Approfondissements</a></li><li class="breadcrumb-item"><a href="./chapter5.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Rappel sur les pré-traitements</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -177,6 +177,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Analyse du sentiment</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Annotations et dépendances syntaxiques</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -190,14 +196,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapter4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Annotations et dépendances syntaxiques</span></span></a>
+  <a href="./chapter5.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Rappel sur les pré-traitements</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapter5.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title"><em>Topic Analysis</em></span></span></a>
+  <a href="./chapter6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title"><em>Topic Analysis</em></span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter8.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">LLM</span></span></a>
   </div>
 </li>
       </ul>
@@ -235,29 +253,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#les-données" id="toc-les-données" class="nav-link active" data-scroll-target="#les-données"><span class="header-section-number">6</span> Les données</a></li>
-  <li><a href="#topics-analysis" id="toc-topics-analysis" class="nav-link" data-scroll-target="#topics-analysis"><span class="header-section-number">7</span> <em>Topics Analysis</em></a>
-  <ul class="collapse">
-  <li><a href="#le-modèle-lda-avec-topicmodels" id="toc-le-modèle-lda-avec-topicmodels" class="nav-link" data-scroll-target="#le-modèle-lda-avec-topicmodels"><span class="header-section-number">7.1</span> Le modèle LDA avec topicmodels</a></li>
-  <li><a href="#topic-analysis-à-partir-de-lannotation-des-part-of-speech" id="toc-topic-analysis-à-partir-de-lannotation-des-part-of-speech" class="nav-link" data-scroll-target="#topic-analysis-à-partir-de-lannotation-des-part-of-speech"><span class="header-section-number">7.2</span> <em>Topic Analysis</em> à partir de l’annotation des <em>part of speech</em></a></li>
-  <li><a href="#déterminer-le-nombre-de-topics-optimal" id="toc-déterminer-le-nombre-de-topics-optimal" class="nav-link" data-scroll-target="#déterminer-le-nombre-de-topics-optimal"><span class="header-section-number">7.3</span> Déterminer le nombre de topics optimal</a></li>
-  <li><a href="#représentation-graphique" id="toc-représentation-graphique" class="nav-link" data-scroll-target="#représentation-graphique"><span class="header-section-number">7.4</span> Représentation graphique</a></li>
-  </ul></li>
-  <li><a href="#theory-driven-lda" id="toc-theory-driven-lda" class="nav-link" data-scroll-target="#theory-driven-lda"><span class="header-section-number">8</span> <em>Theory-Driven LDA</em></a></li>
-  <li><a href="#expliquer-les-notes" id="toc-expliquer-les-notes" class="nav-link" data-scroll-target="#expliquer-les-notes"><span class="header-section-number">9</span> Expliquer les notes</a>
-  <ul class="collapse">
-  <li><a href="#nps" id="toc-nps" class="nav-link" data-scroll-target="#nps"><span class="header-section-number">9.1</span> NPS</a></li>
-  <li><a href="#en-fonction-des-topics" id="toc-en-fonction-des-topics" class="nav-link" data-scroll-target="#en-fonction-des-topics"><span class="header-section-number">9.2</span> En fonction des topics</a></li>
-  </ul></li>
+  <li><a href="#les-données" id="toc-les-données" class="nav-link active" data-scroll-target="#les-données"><span class="header-section-number">5.1</span> Les données</a></li>
+  <li><a href="#reconstruire-le-texte" id="toc-reconstruire-le-texte" class="nav-link" data-scroll-target="#reconstruire-le-texte"><span class="header-section-number">5.2</span> Reconstruire le texte</a></li>
+  <li><a href="#analyse-de-keyness" id="toc-analyse-de-keyness" class="nav-link" data-scroll-target="#analyse-de-keyness"><span class="header-section-number">5.3</span> Analyse de <em>keyness</em></a></li>
+  <li><a href="#diversité-lexicale-et-lisibilité" id="toc-diversité-lexicale-et-lisibilité" class="nav-link" data-scroll-target="#diversité-lexicale-et-lisibilité"><span class="header-section-number">5.4</span> Diversité lexicale et lisibilité</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/SB427/NLP_ED/edit/main/chapter5.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter4.html">Niveau 2 : Approfondissements</a></li><li class="breadcrumb-item"><a href="./chapter5.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title"><em>Topic Analysis</em></span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter5.html">Niveau 2 : Approfondissements</a></li><li class="breadcrumb-item"><a href="./chapter5.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Rappel sur les pré-traitements</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title"><em>Topic Analysis</em></span></h1>
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Rappel sur les pré-traitements</span></h1>
 </div>
 
 
@@ -281,11 +289,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.textstats)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quanteda.textplots)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(topicmodels)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cleanNLP)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggwordcloud)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="les-données" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Les données</h1>
+<section id="les-données" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="les-données"><span class="header-section-number">5.1</span> Les données</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/data_trustpilot_oiseaux.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -298,426 +306,122 @@ dbl (3): id, year, note
 ℹ Use `spec()` to retrieve the full column specification for this data.
 ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
-</div>
-</section>
-<section id="topics-analysis" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> <em>Topics Analysis</em></h1>
-<p>On va maintenant s’intéresser à la détection et à l’analyse de topics. Il existe de nombreux algorithmes pour cela. On va en explorer un : le modèle LDA, pour Latent Dirichlet Allocation.</p>
-<ul>
-<li>Description du modèle LDA :</li>
-</ul>
-<p>L’idée est la suivante : un corpus est considéré comme une collection de documents. Chaque document est considéré comme étant composé d’un mélange de topics. Chaque topic est considéré comme étant composé d’un mélange de tokens. L’algorithme calcule par itération les probabilités d’appartenance des tokens aux topics et des topics aux documents, ce qui nous permet de visualiser la composition des sujets identifiés.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="lda.png" class="img-fluid figure-img"></p>
-<figcaption>Le modèle LDA</figcaption>
-</figure>
-</div>
-<section id="le-modèle-lda-avec-topicmodels" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="le-modèle-lda-avec-topicmodels"><span class="header-section-number">7.1</span> Le modèle LDA avec topicmodels</h2>
-<p>On travaille à partir du dfm. On doit transformer le format des données afin de l’injecter dans le modèle. On réduit le nombre de termes considérés, ce qui permet de réduire les temps de calcul et de trouver une solution convergente.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>corpus_oiseaux<span class="ot">&lt;-</span><span class="fu">corpus</span>(data, <span class="at">text_field =</span> <span class="st">"comments"</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>tok<span class="ot">&lt;-</span><span class="fu">tokens</span>(corpus_oiseaux, <span class="at">remove_punct =</span> <span class="cn">TRUE</span>, <span class="at">remove_numbers =</span> <span class="cn">TRUE</span>, <span class="at">remove_symbols =</span> <span class="cn">TRUE</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens_remove</span>(<span class="fu">stopwords</span>(<span class="st">"fr"</span>))</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>dfm<span class="ot">&lt;-</span><span class="fu">dfm</span>(tok)</span>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cnlp_init_udpipe(model_name = "french")</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># annotate&lt;-cnlp_annotate(data$comments, verbose = 100)</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ann_token&lt;-annotate$token</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># write_csv2(ann_token, "annotation_oiseaux.csv")</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># write_rds(ann_token,"annotation_oiseaux.rds")</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">#On filtre les mots trop et trop peu fréquents</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>rem<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"très"</span>,<span class="st">"rapide"</span>,<span class="st">"produit"</span>,<span class="st">"livraison"</span>, <span class="st">"commande"</span>, <span class="st">"bien"</span>, <span class="st">"site"</span>, <span class="st">"a"</span>, <span class="st">"bon"</span>, <span class="st">"merci"</span>, <span class="st">"recommande"</span>,<span class="st">"parfait"</span>)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>news_dfm <span class="ot">&lt;-</span> dfm <span class="sc">%&gt;%</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_remove</span>(rem)<span class="sc">%&gt;%</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_trim</span>(<span class="at">min_termfreq =</span> <span class="fl">0.8</span>, <span class="at">termfreq_type =</span> <span class="st">"quantile"</span>,    <span class="co"># 80% des mots les plus fréquents</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">max_docfreq =</span> <span class="fl">0.2</span>, <span class="at">docfreq_type =</span> <span class="st">"prop"</span>)          <span class="co">#qui apparaissent dans max 20% des documents</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#On supprime les entrées vides</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>news_dfm <span class="ot">&lt;-</span> news_dfm[<span class="fu">ntoken</span>(news_dfm) <span class="sc">&gt;</span> <span class="dv">0</span>,]</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#On transforme en dtm, un format compris par le package topicsmodel</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>dtm <span class="ot">&lt;-</span> <span class="fu">convert</span>(news_dfm, <span class="at">to =</span> <span class="st">"topicmodels"</span>)</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#On lance le modèle</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>lda <span class="ot">&lt;-</span> <span class="fu">LDA</span>(dtm, <span class="at">k =</span> <span class="dv">5</span>)</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co">#On regarde les résultats</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="fu">terms</span>(lda,<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>      Topic 1      Topic 2    Topic 3      Topic 4      Topic 5  
- [1,] "bonne"      "produits" "produits"   "colis"      "qualité"
- [2,] "produits"   "qualité"  "prix"       "qualité"    "j'ai"   
- [3,] "rien"       "tout"     "tout"       "rapidement" "oiseaux"
- [4,] "colis"      "reçu"     "plus"       "conforme"   "mania"  
- [5,] "j'ai"       "toujours" "conforme"   "mania"      "service"
- [6,] "rapidement" "plus"     "service"    "produits"   "c'est"  
- [7,] "super"      "j'ai"     "tres"       "oiseaux"    "sérieux"
- [8,] "oiseaux"    "service"  "reçu"       "top"        "choix"  
- [9,] "tres"       "c'est"    "super"      "toujours"   "peu"    
-[10,] "frais"      "super"    "satisfaite" "dire"       "chez"   </code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># topics(lda)</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>corpus_oiseaux[<span class="st">"text996"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Corpus consisting of 1 document and 6 docvars.
-text996 :
-"Seconde commande, satisfaction totale, expédition très rapid..."</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>corpus_oiseaux[<span class="st">"text995"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Corpus consisting of 1 document and 6 docvars.
-text995 :
-"Très bon produit. Livraison rapide et sérieux je recommande ..."</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>corpus_oiseaux[<span class="st">"text999"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Corpus consisting of 1 document and 6 docvars.
-text999 :
-"Très bon magasin emballage dans les normes on y trouve de to..."</code></pre>
-</div>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>ann_token<span class="ot">&lt;-</span><span class="fu">read_rds</span>(<span class="st">"data/annotation_oiseaux.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="topic-analysis-à-partir-de-lannotation-des-part-of-speech" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="topic-analysis-à-partir-de-lannotation-des-part-of-speech"><span class="header-section-number">7.2</span> <em>Topic Analysis</em> à partir de l’annotation des <em>part of speech</em></h2>
-<p>Les résultats du modèle LDA sont très dépendants de la qualité du vocabulaire injecté. Plus on travaille ce vocabulaire, meilleurs sont les résultats. On va donc reprendre tout ce qu’on a fait jusqu’à présent pour améliorer les résultats de notre modèle : on récupère les annotations ; on filtre le vocabulaire pour ne garder que les noms, adjectifs et verbes ; on crée les collocations ; on filtre les occurrences trop et pas assez fréquentes.</p>
+<section id="reconstruire-le-texte" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="reconstruire-le-texte"><span class="header-section-number">5.2</span> Reconstruire le texte</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ann_token<span class="ot">&lt;-</span><span class="fu">read_rds</span>(<span class="st">"data/annotation_oiseaux.rds"</span>)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>data<span class="ot">&lt;-</span>ann_token<span class="sc">%&gt;%</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(upos<span class="sc">==</span><span class="st">"NOUN"</span><span class="sc">|</span>upos<span class="sc">==</span><span class="st">"VERB"</span><span class="sc">|</span>upos<span class="sc">==</span><span class="st">"ADJ"</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(doc_id)<span class="sc">%&gt;%</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">text=</span><span class="fu">paste</span>(lemma,<span class="at">collapse =</span> <span class="st">" "</span>))<span class="sc">%&gt;%</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(data, <span class="fu">join_by</span>(<span class="st">"doc_id"</span><span class="sc">==</span><span class="st">"id"</span>))</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>corpus_new<span class="ot">&lt;-</span><span class="fu">corpus</span>(data, <span class="at">text_field =</span> <span class="st">"text"</span>)</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>toks<span class="ot">&lt;-</span><span class="fu">tokens</span>(corpus_new)<span class="sc">%&gt;%</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens_replace</span>(<span class="fu">c</span>(<span class="st">"produire"</span>, <span class="st">"conformer"</span>,<span class="st">"colir"</span>), <span class="fu">c</span>(<span class="st">"produit"</span>, <span class="st">"conforme"</span>,<span class="st">"colis"</span>))<span class="sc">%&gt;%</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens_remove</span>(<span class="fu">c</span>(<span class="st">"."</span>,<span class="st">","</span>))</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>colloc<span class="ot">&lt;-</span><span class="fu">textstat_collocations</span>(toks, <span class="at">min_count =</span> <span class="dv">10</span>, <span class="at">tolower =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>toks<span class="ot">&lt;-</span><span class="fu">tokens_compound</span>(toks, <span class="at">pattern =</span> colloc[colloc<span class="sc">$</span>z<span class="sc">&gt;</span><span class="dv">7</span>,])</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>dfm_new<span class="ot">&lt;-</span><span class="fu">dfm</span>(toks)<span class="sc">%&gt;%</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dfm_trim</span>(<span class="at">min_termfreq =</span> <span class="fl">0.6</span>, <span class="at">termfreq_type =</span> <span class="st">"quantile"</span>,</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>           <span class="at">max_docfreq =</span> <span class="fl">0.1</span>, <span class="at">docfreq_type =</span> <span class="st">"prop"</span>)</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>dtm_new <span class="ot">&lt;-</span> <span class="fu">convert</span>(dfm_new, <span class="at">to =</span> <span class="st">"topicmodels"</span>)</span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>lda <span class="ot">&lt;-</span> <span class="fu">LDA</span>(dtm_new, <span class="at">k =</span> <span class="dv">5</span>)</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>term<span class="ot">&lt;-</span><span class="fu">as_tibble</span>(<span class="fu">terms</span>(lda,<span class="dv">25</span>))<span class="sc">%&gt;%</span></span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank=</span><span class="fu">as.numeric</span>(<span class="fu">row.names</span>(.)))<span class="sc">%&gt;%</span></span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>rank, <span class="at">names_to =</span> <span class="st">"topic"</span>,<span class="at">values_to =</span> <span class="st">"term"</span>)</span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(term, <span class="fu">aes</span>(<span class="at">x=</span>topic, <span class="at">y=</span> rank, <span class="at">group =</span>  term , <span class="at">label =</span> term)) <span class="sc">+</span> </span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>() <span class="sc">+</span></span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">color=</span>topic,<span class="at">size=</span><span class="dv">8</span><span class="sc">/</span><span class="fu">log</span>(rank)))<span class="sc">+</span></span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_hue</span>()<span class="sc">+</span></span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color=</span><span class="st">"none"</span>,<span class="at">size=</span><span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data<span class="ot">&lt;-</span>ann_token<span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(upos<span class="sc">==</span><span class="st">"NOUN"</span><span class="sc">|</span>upos<span class="sc">==</span><span class="st">"VERB"</span><span class="sc">|</span>upos<span class="sc">==</span><span class="st">"ADJ"</span><span class="sc">|</span>upos<span class="sc">==</span><span class="st">"ADV"</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(doc_id)<span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">text=</span><span class="fu">paste</span>(lemma,<span class="at">collapse =</span> <span class="st">" "</span>))<span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(data, <span class="fu">join_by</span>(<span class="st">"doc_id"</span><span class="sc">==</span><span class="st">"id"</span>))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>corpus_new<span class="ot">&lt;-</span><span class="fu">corpus</span>(data, <span class="at">text_field =</span> <span class="st">"text"</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>toks<span class="ot">&lt;-</span><span class="fu">tokens</span>(corpus_new)<span class="sc">%&gt;%</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens_replace</span>(<span class="fu">c</span>(<span class="st">"produire"</span>, <span class="st">"conformer"</span>,<span class="st">"colir"</span>, <span class="st">"tre"</span>, <span class="st">"livrer"</span>, <span class="st">"n"</span>), <span class="fu">c</span>(<span class="st">"produit"</span>, <span class="st">"conforme"</span>,<span class="st">"colis"</span>, <span class="st">"très"</span>, <span class="st">"livraison"</span>, <span class="st">"ne"</span>))<span class="sc">%&gt;%</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tokens_remove</span>(<span class="fu">c</span>(<span class="st">"."</span>,<span class="st">","</span>))</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>colloc<span class="ot">&lt;-</span><span class="fu">textstat_collocations</span>(toks, <span class="at">min_count =</span> <span class="dv">10</span>, <span class="at">tolower =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>toks<span class="ot">&lt;-</span><span class="fu">tokens_compound</span>(toks, <span class="at">pattern =</span> colloc[colloc<span class="sc">$</span>z<span class="sc">&gt;</span><span class="dv">7</span>,])</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>dfm<span class="ot">&lt;-</span><span class="fu">dfm</span>(toks)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">textstat_frequency</span>(dfm),<span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            feature frequency rank docfreq group
+1           produit       604    1     530   all
+2          commande       571    2     505   all
+3           parfait       481    3     441   all
+4         livraison       462    4     414   all
+5       recommander       430    5     417   all
+6         commander       407    6     362   all
+7              site       395    7     356   all
+8              très       370    8     321   all
+9             avoir       337    9     293   all
+10           rapide       315   10     303   all
+11 livraison_rapide       311   11     306   all
+12            super       282   12     254   all
+13           oiseau       281   13     251   all
+14              pas       277   14     226   all
+15        très_bien       272   15     253   all
+16             plus       266   16     231   all
+17             bien       253   17     227   all
+18         recevoir       231   18     210   all
+19               ne       218   19     195   all
+20             dire       201   20     190   all
+21          article       200   21     177   all
+22   très_satisfait       180   22     174   all
+23          service       179   23     168   all
+24         toujours       176   24     160   all
+25            faire       176   24     152   all
+26        perroquet       173   26     158   all
+27              bon       170   27     158   all
+28             tout       153   28     142   all
+29          qualité       150   29     144   all
+30         problème       150   29     137   all
+31           ne_pas       147   31     131   all
+32          trouver       145   32     137   all
+33              top       145   32     138   all
+34            colis       145   32     123   all
+35        excellent       141   35     134   all
+36            petit       137   36     125   all
+37         conforme       132   37     127   all
+38             prix       132   37     125   all
+39          arriver       122   39     117   all
+40          sérieux       122   39     116   all
+41    bien_emballer       119   41     115   all
+42       satisfaire       111   42     109   all
+43             même       108   43     100   all
+44         beaucoup       107   44     104   all
+45             jour       104   45     103   all
+46       rapidement       103   46     100   all
+47          pouvoir        98   47      90   all
+48            jouet        96   48      74   all
+49      très_rapide        94   49      91   all
+50            délai        93   50      86   all</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">textplot_wordcloud</span>(dfm, <span class="at">max_size =</span> <span class="dv">4</span>, <span class="at">max_words =</span> <span class="dv">200</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="chapter5_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="chapter5_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="déterminer-le-nombre-de-topics-optimal" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="déterminer-le-nombre-de-topics-optimal"><span class="header-section-number">7.3</span> Déterminer le nombre de topics optimal</h2>
-<p>Le modèle LDA fonctionne à partir d’un nombre de topics donné. La question est donc de savoir quel est le nombre de topics optimal pour décrire notre corpus. Heureusement, des personnes ont créé des fonctions et des procédures pour nous aider dans cette quête. L’idée est de calculer différents modèles pour différents nombres de topics, et de comparer la qualité des résultats. La procédure ci-dessous est en deux parties :</p>
-<ul>
-<li><p>Tout d’abord, on compare la qualité de différents indicateurs sur un grand nombre de modèles, pour aboutir à une liste de quelques solutions à comparer plus en détail (de 3 à 10).</p></li>
-<li><p>Ensuite, on compare les résultats de la liste réduite de modèles, pour déterminer lequel a la meilleure distribution des topics entre les documents. La distribution recherchée est celle qui distingue le plus les documents en fonction des topics, tout en étant à droite de l’estimation d’une répartition uniforme des documents entre les topics. Le critère de parcimonie nous invite à choisir la solution avec le moins grand nombre de topics, en cas de résultats comparables.</p></li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">##Etape 1 : les meilleures solutions</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ldatuning)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attachement du package : 'magrittr'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>L'objet suivant est masqué depuis 'package:purrr':
-
-    set_names</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>L'objet suivant est masqué depuis 'package:tidyr':
-
-    extract</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>result <span class="ot">&lt;-</span> <span class="fu">FindTopicsNumber</span>(dtm_new,</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">topics =</span> <span class="fu">c</span>(<span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">2</span>, <span class="at">to =</span> <span class="dv">9</span>, <span class="at">by =</span> <span class="dv">1</span>), <span class="fu">seq</span>(<span class="dv">10</span>, <span class="dv">25</span>, <span class="dv">5</span>)),</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">metrics =</span> <span class="fu">c</span>(<span class="st">"Griffiths2004"</span>, <span class="st">"CaoJuan2009"</span>, <span class="st">"Arun2010"</span>, <span class="st">"Deveaud2014"</span>),</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">method =</span> <span class="st">"Gibbs"</span>,</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">control =</span> <span class="fu">list</span>(<span class="at">seed =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>,</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">nstart =</span> <span class="dv">5</span>,</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">best =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>                           <span class="at">mc.cores =</span> <span class="dv">4</span>L,</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>                           <span class="at">verbose =</span> <span class="cn">TRUE</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>                           )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>fit models... done.
-calculate metrics:
-  Griffiths2004... done.
-  CaoJuan2009... done.
-  Arun2010... done.
-  Deveaud2014... done.</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">FindTopicsNumber_plot</span>(result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: The `&lt;scale&gt;` argument of `guides()` cannot be `FALSE`. Use "none" instead as
-of ggplot2 3.3.4.
-ℹ The deprecated feature was likely used in the ldatuning package.
-  Please report the issue at &lt;https://github.com/nikita-moor/ldatuning/issues&gt;.</code></pre>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="chapter5_files/figure-html/proc_topic-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="do">##Etape 2 : comparaison des solutions</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>para <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">k =</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>))</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>lemma_tm <span class="ot">&lt;-</span> para <span class="sc">%&gt;%</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lda =</span> <span class="fu">map</span>(k,</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>                   <span class="cf">function</span>(k) <span class="fu">LDA</span>(</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">k=</span>k,</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">x=</span>dtm_new,</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">method=</span><span class="st">"Gibbs"</span>,</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">control=</span><span class="fu">list</span>(<span class="at">seed =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">4</span>,</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">nstart =</span> <span class="dv">5</span>,</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">best =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>                     )</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>                   )</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>         )</span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>lemma_tm <span class="ot">&lt;-</span> lemma_tm <span class="sc">%&gt;%</span></span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lda_gamma =</span> <span class="fu">map</span>(<span class="at">.x=</span>lda,</span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>                         <span class="at">.f=</span>tidytext<span class="sc">::</span>tidy,</span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>                         <span class="at">matrix=</span><span class="st">"gamma"</span>))</span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>lemma_tm <span class="sc">%&gt;%</span></span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(lda_gamma) <span class="sc">%&gt;%</span></span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(k, document) <span class="sc">%&gt;%</span></span>
-<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(gamma)) <span class="sc">%&gt;%</span></span>
-<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>gamma, <span class="at">fill=</span><span class="fu">factor</span>(k))) <span class="sc">+</span></span>
-<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">20</span>) <span class="sc">+</span></span>
-<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_discrete</span>(<span class="at">name =</span> <span class="st">"Number of</span><span class="sc">\n</span><span class="st">Topics"</span>) <span class="sc">+</span></span>
-<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"maximum gamma per document"</span>) <span class="sc">+</span></span>
-<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>k) <span class="sc">+</span></span>
-<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> <span class="dv">1</span><span class="sc">/</span>k),</span>
-<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>             <span class="fu">tibble</span>(<span class="at">k=</span>lemma_tm <span class="sc">%$%</span> <span class="fu">unique</span>(k)),</span>
-<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>             <span class="at">color=</span><span class="st">"darkred"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="chapter5_files/figure-html/proc_topic-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="représentation-graphique" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="représentation-graphique"><span class="header-section-number">7.4</span> Représentation graphique</h2>
-<p>À partir de la solution retenue aux étapes précédentes, on va représenter les différents topics :</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)     <span class="co">#pour la réplicabilité des résultats</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>lda <span class="ot">&lt;-</span> <span class="fu">LDA</span>(dtm_new, <span class="at">k =</span> <span class="dv">9</span>)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>lda_res<span class="ot">&lt;-</span><span class="fu">as.data.frame</span>(<span class="fu">terms</span>(lda, <span class="dv">25</span>))<span class="sc">%&gt;%</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">nom1=</span><span class="st">'Topic 1'</span>,<span class="at">nom2=</span><span class="st">'Topic 2'</span>, <span class="at">nom3=</span><span class="st">'Topic 3'</span>, <span class="at">nom4=</span><span class="st">'Topic 4'</span>, <span class="at">nom5=</span><span class="st">'Topic 5'</span>,<span class="at">nom6=</span><span class="st">'Topic 6'</span>,<span class="at">nom7=</span><span class="st">'Topic 7'</span>, <span class="at">nom8=</span><span class="st">'Topic 8'</span>, <span class="at">nom9=</span><span class="st">'Topic 9'</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank=</span><span class="fu">as.numeric</span>(<span class="fu">row.names</span>(.)))<span class="sc">%&gt;%</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>rank, <span class="at">names_to =</span> <span class="st">"topic"</span>, <span class="at">values_to =</span> <span class="st">"term"</span>)</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(lda_res, <span class="fu">aes</span>(<span class="at">x=</span>topic, <span class="at">y=</span> rank, <span class="at">group =</span>  term , <span class="at">label =</span> term)) <span class="sc">+</span> </span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>() <span class="sc">+</span></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">color=</span>topic,<span class="at">size=</span><span class="dv">8</span><span class="sc">/</span><span class="fu">log</span>(rank)))<span class="sc">+</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_hue</span>()<span class="sc">+</span></span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">color=</span><span class="cn">FALSE</span>,<span class="at">size=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="chapter5_files/figure-html/lda_graph-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-</section>
-<section id="theory-driven-lda" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> <em>Theory-Driven LDA</em></h1>
-<p>Ici, on va forcer les <em>topics</em> grâce à la réalisation d’un dictionnaire. C’est utile quand on cherche à appliquer une théorie qui nous dit ce que l’on cherche à trouver. Par exemple, ici on s’intéresse aux attributs clés des logements oiseaux. Dans d’autre cas, on pourra chercher à expliquer les notes en fonction de <em>topics</em> qui reflètent les attributs clés. On peut réaliser le dictionnaire a priori ou après différentes analyses de <em>topics</em>, de co-occurences, de fréquence, etc.</p>
-<p>On commence par créer un dictionnaire.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>dict<span class="ot">&lt;-</span><span class="fu">dictionary</span>(<span class="fu">list</span>(<span class="at">produit=</span><span class="fu">c</span>(<span class="st">"produit*"</span>, <span class="st">"cage"</span>,<span class="st">"oiseau"</span>,<span class="st">"graine*"</span>),</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">livraison=</span><span class="fu">c</span>(<span class="st">"livr*"</span>,<span class="st">"recepti*"</span>,<span class="st">"délai"</span>),</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">commande=</span><span class="fu">c</span>(<span class="st">"command*"</span>,<span class="st">"emballage"</span>,<span class="st">"envoi*"</span>),</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">site=</span><span class="st">"*site*"</span>,</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">prix=</span><span class="fu">c</span>(<span class="st">"*prix*"</span>,<span class="st">"frais_port"</span>)</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>                      ))</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>dict</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Dictionary object with 5 key entries.
-- [produit]:
-  - produit*, cage, oiseau, graine*
-- [livraison]:
-  - livr*, recepti*, délai
-- [commande]:
-  - command*, emballage, envoi*
-- [site]:
-  - *site*
-- [prix]:
-  - *prix*, frais_port</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">dfm_lookup</span>(dfm_new,dict))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Document-feature matrix of: 6 documents, 5 features (73.33% sparse) and 6 docvars.
-    features
-docs produit livraison commande site prix
-   1       0         0        0    0    0
-   2       0         2        1    0    0
-   3       2         1        0    0    0
-   4       0         0        1    0    0
-   5       0         1        0    0    0
-   6       0         1        0    1    0</code></pre>
-</div>
-</div>
-<p>On utilise ensuite le package ‘seededlda’ pour lancer le modèle semi-supervisé.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(seededlda)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Le chargement a nécessité le package : proxyC</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attachement du package : 'proxyC'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>L'objet suivant est masqué depuis 'package:stats':
-
-    dist</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attachement du package : 'seededlda'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Les objets suivants sont masqués depuis 'package:topicmodels':
-
-    terms, topics</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>L'objet suivant est masqué depuis 'package:stats':
-
-    terms</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>slda<span class="ot">&lt;-</span><span class="fu">textmodel_seededlda</span>(dfm_new, dict, <span class="at">residual =</span> T)</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">terms</span>(slda,<span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>      produit                        livraison                     
- [1,] "oiseau"                       "livraison"                   
- [2,] "cage"                         "livrer"                      
- [3,] "graine"                       "délai"                       
- [4,] "perroquet"                    "dire"                        
- [5,] "produit_qualité"              "bon_produit"                 
- [6,] "produit_conforme"             "satisfaire"                  
- [7,] "avoir"                        "problème"                    
- [8,] "content"                      "satisfait"                   
- [9,] "trouver"                      "service"                     
-[10,] "petit"                        "bon"                         
-[11,] "jouet"                        "top"                         
-[12,] "acheter"                      "livraison_rapide_produit"    
-[13,] "harnais"                      "livraison_rapide_recommander"
-[14,] "perruche"                     "temps"                       
-[15,] "produit_bon_qualité"          "cher"                        
-[16,] "grand"                        "impeccable"                  
-[17,] "produit_conforme_description" "emballer"                    
-[18,] "tout"                         "livreur"                     
-[19,] "passer"                       "livraison_temps"             
-[20,] "arriver"                      "correct"                     
-      commande              site               prix                      
- [1,] "commander"           "site"             "prix"                    
- [2,] "recevoir"            "rapide"           "bon"                     
- [3,] "envoi_rapide"        "bon_site"         "excellent"               
- [4,] "emballage"           "recommander_site" "qualité"                 
- [5,] "envoi"               "sérieux"          "service"                 
- [6,] "satisfait"           "site_sérieux"     "frais_port"              
- [7,] "article"             "tre"              "top"                     
- [8,] "conforme"            "satisfait"        "article"                 
- [9,] "commande_recevoir"   "siter"            "magasin"                 
-[10,] "emballer"            "redire"           "prix_raisonnable"        
-[11,] "envoi_rapide_soigné" "rapider"          "satisfait"               
-[12,] "commande_arriver"    "premier_commande" "professionnel"           
-[13,] "commande_passer"     "super_site"       "super"                   
-[14,] "correspondre"        "super"            "équipe"                  
-[15,] "problème"            "choix"            "réactif"                 
-[16,] "content"             "autre_site"       "téléphone"               
-[17,] "commande_livrer"     "conseiller"       "bon_rapport_qualité_prix"
-[18,] "rapidité"            "bon_produit"      "prix_correct"            
-[19,] "rapide"              "achat"            "trouver"                 
-[20,] "envoie"              "hésiter"          "expédition_rapide"       
-      other     
- [1,] "avoir"   
- [2,] "faire"   
- [3,] "colis"   
- [4,] "pouvoir" 
- [5,] "jour"    
- [6,] "fois"    
- [7,] "recevoir"
- [8,] "attendre"
- [9,] "dire"    
-[10,] "autre"   
-[11,] "aller"   
-[12,] "part"    
-[13,] "être"    
-[14,] "petit"   
-[15,] "devoir"  
-[16,] "problème"
-[17,] "mettre"  
-[18,] "attente" 
-[19,] "voir"    
-[20,] "mail"    </code></pre>
-</div>
-</div>
-</section>
-<section id="expliquer-les-notes" class="level1" data-number="9">
-<h1 data-number="9"><span class="header-section-number">9</span> Expliquer les notes</h1>
-<p>Dans cette dernière partie, nous allons nous intéresser aux notes et tenter de les expliquer à l’aide de l’analyse de <em>topics</em>.</p>
-<section id="nps" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="nps"><span class="header-section-number">9.1</span> NPS</h2>
+<section id="analyse-de-keyness" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="analyse-de-keyness"><span class="header-section-number">5.3</span> Analyse de <em>keyness</em></h2>
 <p>Dans un premier temps, nous allons regarder le Net Promoter Score (NPS), puis nous étudierons les discours des promoteurs, détracteurs et passifs.</p>
 <p>Tout d’abord, nous créons nos catégories en fonction des notes.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>col<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"gold"</span>, <span class="st">"chartreuse"</span>)</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>data<span class="ot">&lt;-</span>data <span class="sc">%&gt;%</span></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">NPS=</span><span class="fu">case_when</span>(note<span class="sc">&lt;</span><span class="dv">4</span><span class="sc">~</span><span class="st">"Détracteurs"</span>,</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>                       note<span class="sc">==</span><span class="dv">4</span><span class="sc">~</span><span class="st">"Passifs"</span>,</span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>                       note<span class="sc">&gt;</span><span class="dv">4</span><span class="sc">~</span><span class="st">"Promoteurs"</span>))</span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x=</span>note))<span class="sc">+</span></span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span>, <span class="fu">aes</span>(<span class="at">fill=</span>NPS))<span class="sc">+</span></span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>( <span class="at">title=</span> <span class="st">" Distribution des scores NPS"</span>, </span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="fu">paste</span>(<span class="st">"Moyenne du NPS de l'échantillon"</span>,<span class="fu">round</span>(<span class="fu">mean</span>(data<span class="sc">$</span>note),<span class="dv">1</span>)), </span>
-<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="fu">paste</span>(<span class="st">"Data : TrustPilot, n="</span>,<span class="fu">nrow</span>(data)), </span>
-<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Fréquence"</span>)<span class="sc">+</span> </span>
-<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span>col)<span class="sc">+</span></span>
-<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>col<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"gold"</span>, <span class="st">"chartreuse"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>data<span class="ot">&lt;-</span>data <span class="sc">%&gt;%</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">NPS=</span><span class="fu">case_when</span>(note<span class="sc">&lt;</span><span class="dv">4</span><span class="sc">~</span><span class="st">"Détracteurs"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                       note<span class="sc">==</span><span class="dv">4</span><span class="sc">~</span><span class="st">"Passifs"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>                       note<span class="sc">&gt;</span><span class="dv">4</span><span class="sc">~</span><span class="st">"Promoteurs"</span>))</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x=</span>note))<span class="sc">+</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span>, <span class="fu">aes</span>(<span class="at">fill=</span>NPS))<span class="sc">+</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>( <span class="at">title=</span> <span class="st">" Distribution des scores NPS"</span>, </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">subtitle =</span> <span class="fu">paste</span>(<span class="st">"Moyenne du NPS de l'échantillon"</span>,<span class="fu">round</span>(<span class="fu">mean</span>(data<span class="sc">$</span>note),<span class="dv">1</span>)), </span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">caption =</span> <span class="fu">paste</span>(<span class="st">"Data : TrustPilot, n="</span>,<span class="fu">nrow</span>(data)), </span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Fréquence"</span>)<span class="sc">+</span> </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span>col)<span class="sc">+</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_light</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -728,116 +432,24 @@ Attachement du package : 'seededlda'</code></pre>
 </div>
 <p>Puis nous réalisons un nuage de mots pour chaque groupe, afin d’avoir une idée de ce qui est exprimé.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>dfm_new<span class="sc">$</span>NPS<span class="ot">&lt;-</span>data<span class="sc">$</span>NPS</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co"># docvars(toks)</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>dfm_gp <span class="ot">&lt;-</span>dfm_new <span class="sc">%&gt;%</span></span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dfm_group</span>(<span class="at">groups =</span> NPS)</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="co"># dfm_gp</span></span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>stat<span class="ot">&lt;-</span> dfm_gp <span class="sc">%&gt;%</span> </span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">textstat_frequency</span>(<span class="at">n =</span> <span class="dv">30</span>,  <span class="at">groups =</span> NPS)</span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>stat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>       feature frequency rank docfreq       group
-1        avoir       103    1       1 Détracteurs
-2    commander        81    2       1 Détracteurs
-3     recevoir        79    3       1 Détracteurs
-4    livraison        77    4       1 Détracteurs
-5        colis        41    5       1 Détracteurs
-6         site        40    6       1 Détracteurs
-7      pouvoir        38    7       1 Détracteurs
-8      article        38    7       1 Détracteurs
-9       livrer        37    9       1 Détracteurs
-10       faire        34   10       1 Détracteurs
-11        fois        31   11       1 Détracteurs
-12    problème        28   12       1 Détracteurs
-13        dire        28   12       1 Détracteurs
-14    attendre        28   12       1 Détracteurs
-15        jour        28   12       1 Détracteurs
-16      devoir        28   12       1 Détracteurs
-17        cher        26   17       1 Détracteurs
-18      graine        26   17       1 Détracteurs
-19       autre        25   19       1 Détracteurs
-20     envoyer        25   19       1 Détracteurs
-21       payer        25   19       1 Détracteurs
-22     acheter        25   19       1 Détracteurs
-23     trouver        23   23       1 Détracteurs
-24        cage        23   23       1 Détracteurs
-25        long        23   23       1 Détracteurs
-26      oiseau        21   26       1 Détracteurs
-27        déçu        21   26       1 Détracteurs
-28        mois        21   26       1 Détracteurs
-29     réponse        20   29       1 Détracteurs
-30     semaine        20   29       1 Détracteurs
-31       avoir        85    1       1     Passifs
-32   livraison        78    2       1     Passifs
-33   commander        56    3       1     Passifs
-34        site        53    4       1     Passifs
-35    recevoir        50    5       1     Passifs
-36      rapide        42    6       1     Passifs
-37   satisfait        41    7       1     Passifs
-38         bon        40    8       1     Passifs
-39       petit        35    9       1     Passifs
-40     pouvoir        34   10       1     Passifs
-41   perroquet        34   10       1     Passifs
-42       colis        33   12       1     Passifs
-43      oiseau        32   13       1     Passifs
-44     trouver        30   14       1     Passifs
-45       faire        29   15       1     Passifs
-46     article        28   16       1     Passifs
-47  frais_port        28   16       1     Passifs
-48        cher        26   18       1     Passifs
-49    problème        23   19       1     Passifs
-50        dire        23   19       1     Passifs
-51 bon_produit        21   21       1     Passifs
-52      livrer        21   21       1     Passifs
-53    emballer        21   21       1     Passifs
-54       délai        20   24       1     Passifs
-55  satisfaire        20   24       1     Passifs
-56        cage        20   24       1     Passifs
-57     arriver        19   27       1     Passifs
-58        prix        19   27       1     Passifs
-59   emballage        19   27       1     Passifs
-60       super        18   30       1     Passifs
-61      rapide       295    1       1  Promoteurs
-62   satisfait       284    2       1  Promoteurs
-63        site       279    3       1  Promoteurs
-64   livraison       275    4       1  Promoteurs
-65   commander       269    5       1  Promoteurs
-66      oiseau       228    6       1  Promoteurs
-67       avoir       222    7       1  Promoteurs
-68    recevoir       186    8       1  Promoteurs
-69         bon       173    9       1  Promoteurs
-70     sérieux       157   10       1  Promoteurs
-71        dire       150   11       1  Promoteurs
-72     qualité       146   12       1  Promoteurs
-73     service       143   13       1  Promoteurs
-74         top       141   14       1  Promoteurs
-75 bon_produit       138   15       1  Promoteurs
-76   excellent       138   15       1  Promoteurs
-77     article       134   17       1  Promoteurs
-78       super       133   18       1  Promoteurs
-79     content       127   19       1  Promoteurs
-80   perroquet       122   20       1  Promoteurs
-81     trouver       119   21       1  Promoteurs
-82    problème       117   22       1  Promoteurs
-83       faire       111   23       1  Promoteurs
-84    emballer       111   23       1  Promoteurs
-85    conforme       108   25       1  Promoteurs
-86        prix        99   26       1  Promoteurs
-87         tre        93   27       1  Promoteurs
-88       délai        92   28       1  Promoteurs
-89       petit        92   28       1  Promoteurs
-90    rapidité        88   30       1  Promoteurs</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(stat, <span class="fu">aes</span>(<span class="at">label =</span> feature)) <span class="sc">+</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_wordcloud</span>(<span class="fu">aes</span>(<span class="at">size=</span><span class="fu">log</span>(frequency), <span class="at">color=</span>group)) <span class="sc">+</span></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(group))<span class="sc">+</span></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span>col)<span class="sc">+</span> </span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Nuage des 30 mots les plus fréquents (Par groupes)"</span>,</span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"La taille des mots est proportionnelle au log de leurs fréquences"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>dfm<span class="sc">$</span>NPS<span class="ot">&lt;-</span>data<span class="sc">$</span>NPS</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># docvars(dfm)</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>dfm_gp <span class="ot">&lt;-</span>dfm<span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dfm_group</span>(<span class="at">groups =</span> NPS)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># dfm_gp</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>stat<span class="ot">&lt;-</span> dfm_gp <span class="sc">%&gt;%</span> </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">textstat_frequency</span>(<span class="at">n =</span> <span class="dv">30</span>,  <span class="at">groups =</span> NPS)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># stat</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(stat, <span class="fu">aes</span>(<span class="at">label =</span> feature)) <span class="sc">+</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_wordcloud</span>(<span class="fu">aes</span>(<span class="at">size=</span><span class="fu">log</span>(frequency), <span class="at">color=</span>group)) <span class="sc">+</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(group))<span class="sc">+</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span>col)<span class="sc">+</span> </span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Nuage des 30 mots les plus fréquents (Par groupes)"</span>,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"La taille des mots est proportionnelle au log de leurs fréquences"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -848,24 +460,24 @@ Attachement du package : 'seededlda'</code></pre>
 </div>
 <p>Maintenant, nous nous intéressons à ce qui caractérise chacun des groupes par rapport aux autres, grâce à la mesure du <em>keyness</em>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>graph_promoteur<span class="ot">&lt;-</span><span class="fu">textstat_keyness</span>(dfm_gp, <span class="at">target =</span> <span class="st">"Promoteurs"</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">textplot_keyness</span>(<span class="at">n =</span> <span class="dv">30</span>L, <span class="at">labelsize =</span> <span class="dv">2</span>,   <span class="at">show_legend =</span> <span class="cn">FALSE</span>, </span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">show_reference =</span> <span class="cn">FALSE</span>,   <span class="at">color =</span> <span class="fu">c</span>(<span class="st">"Darkgreen"</span>, <span class="st">"gray"</span>))<span class="sc">+</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="cn">NULL</span>)</span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>graph_detracteur <span class="ot">&lt;-</span> <span class="fu">textstat_keyness</span>(dfm_gp, <span class="at">target =</span> <span class="st">"Détracteurs"</span> )<span class="sc">%&gt;%</span></span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">textplot_keyness</span>(<span class="at">n =</span> <span class="dv">30</span>L, <span class="at">labelsize =</span> <span class="dv">2</span>,   <span class="at">show_legend =</span> <span class="cn">FALSE</span>,   </span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">show_reference =</span> <span class="cn">FALSE</span>,   <span class="at">color =</span> <span class="fu">c</span>(<span class="st">"firebrick"</span>, <span class="st">"gray"</span>))<span class="sc">+</span> </span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="cn">NULL</span>)</span>
-<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>graph_passif <span class="ot">&lt;-</span> <span class="fu">textstat_keyness</span>(dfm_gp, <span class="at">target =</span> <span class="st">"Passifs"</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">textplot_keyness</span>(<span class="at">n =</span> <span class="dv">30</span>L, <span class="at">labelsize =</span> <span class="dv">2</span>,   <span class="at">show_legend =</span> <span class="cn">FALSE</span>,   <span class="at">show_reference =</span> <span class="cn">FALSE</span>,    <span class="at">color =</span> <span class="fu">c</span>(<span class="st">"gold2"</span>, <span class="st">"gray"</span>))<span class="sc">+</span></span>
-<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="cn">NULL</span>)</span>
-<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cowplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>graph_promoteur<span class="ot">&lt;-</span><span class="fu">textstat_keyness</span>(dfm_gp, <span class="at">target =</span> <span class="st">"Promoteurs"</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">textplot_keyness</span>(<span class="at">n =</span> <span class="dv">30</span>L, <span class="at">labelsize =</span> <span class="dv">2</span>,   <span class="at">show_legend =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">show_reference =</span> <span class="cn">FALSE</span>,   <span class="at">color =</span> <span class="fu">c</span>(<span class="st">"Darkgreen"</span>, <span class="st">"gray"</span>))<span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="cn">NULL</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>graph_detracteur <span class="ot">&lt;-</span> <span class="fu">textstat_keyness</span>(dfm_gp, <span class="at">target =</span> <span class="st">"Détracteurs"</span> )<span class="sc">%&gt;%</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">textplot_keyness</span>(<span class="at">n =</span> <span class="dv">30</span>L, <span class="at">labelsize =</span> <span class="dv">2</span>,   <span class="at">show_legend =</span> <span class="cn">FALSE</span>,   </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>                     <span class="at">show_reference =</span> <span class="cn">FALSE</span>,   <span class="at">color =</span> <span class="fu">c</span>(<span class="st">"firebrick"</span>, <span class="st">"gray"</span>))<span class="sc">+</span> </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="cn">NULL</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>graph_passif <span class="ot">&lt;-</span> <span class="fu">textstat_keyness</span>(dfm_gp, <span class="at">target =</span> <span class="st">"Passifs"</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">textplot_keyness</span>(<span class="at">n =</span> <span class="dv">30</span>L, <span class="at">labelsize =</span> <span class="dv">2</span>,   <span class="at">show_legend =</span> <span class="cn">FALSE</span>,   <span class="at">show_reference =</span> <span class="cn">FALSE</span>,    <span class="at">color =</span> <span class="fu">c</span>(<span class="st">"gold2"</span>, <span class="st">"gray"</span>))<span class="sc">+</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="cn">NULL</span>)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cowplot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
 Attachement du package : 'cowplot'</code></pre>
@@ -875,14 +487,14 @@ Attachement du package : 'cowplot'</code></pre>
 
     stamp</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>p<span class="ot">&lt;-</span> <span class="fu">plot_grid</span>(graph_detracteur, graph_passif ,graph_promoteur,  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'Détracteurs'</span>, <span class="st">'Passifs'</span>, <span class="st">'Promoteurs'</span>), <span class="at">label_size =</span> <span class="dv">10</span>, <span class="at">ncol=</span><span class="dv">3</span>)</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>title <span class="ot">&lt;-</span> <span class="fu">ggdraw</span>() <span class="sc">+</span> <span class="fu">draw_label</span>(<span class="st">"NPS : Les raisons qui conduisent à la recommandation (keyness)"</span>, <span class="at">fontface=</span><span class="st">'bold'</span>)</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>note <span class="ot">&lt;-</span> <span class="fu">ggdraw</span>()<span class="sc">+</span> <span class="fu">draw_text</span>(<span class="st">"Les valeurs représentent le keyness des termes.</span><span class="sc">\n</span><span class="st">Il mesure leur caractère distinctif par une statistique du chi²"</span>, <span class="at">size=</span><span class="dv">8</span>,<span class="at">x =</span> <span class="fl">0.5</span>, <span class="at">y =</span> <span class="fl">0.5</span>)</span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid</span>(title, p,note, <span class="at">ncol=</span><span class="dv">1</span>, <span class="at">rel_heights=</span><span class="fu">c</span>(<span class="fl">0.1</span>, <span class="dv">1</span>)) <span class="co"># rel_heights values control title margins</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>p<span class="ot">&lt;-</span> <span class="fu">plot_grid</span>(graph_detracteur, graph_passif ,graph_promoteur,  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">'Détracteurs'</span>, <span class="st">'Passifs'</span>, <span class="st">'Promoteurs'</span>), <span class="at">label_size =</span> <span class="dv">10</span>, <span class="at">ncol=</span><span class="dv">3</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>title <span class="ot">&lt;-</span> <span class="fu">ggdraw</span>() <span class="sc">+</span> <span class="fu">draw_label</span>(<span class="st">"NPS : Les raisons qui conduisent à la recommandation (keyness)"</span>, <span class="at">fontface=</span><span class="st">'bold'</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>note <span class="ot">&lt;-</span> <span class="fu">ggdraw</span>()<span class="sc">+</span> <span class="fu">draw_text</span>(<span class="st">"Les valeurs représentent le keyness des termes.</span><span class="sc">\n</span><span class="st">Il mesure leur caractère distinctif par une statistique du chi²"</span>, <span class="at">size=</span><span class="dv">8</span>,<span class="at">x =</span> <span class="fl">0.5</span>, <span class="at">y =</span> <span class="fl">0.5</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid</span>(title, p,note, <span class="at">ncol=</span><span class="dv">1</span>, <span class="at">rel_heights=</span><span class="fu">c</span>(<span class="fl">0.1</span>, <span class="dv">1</span>)) <span class="co"># rel_heights values control title margins</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -892,62 +504,32 @@ Attachement du package : 'cowplot'</code></pre>
 </div>
 </div>
 </section>
-<section id="en-fonction-des-topics" class="level2" data-number="9.2">
-<h2 data-number="9.2" class="anchored" data-anchor-id="en-fonction-des-topics"><span class="header-section-number">9.2</span> En fonction des topics</h2>
-<p>Maintenant, nous cherchons à voir la répartition des <em>topics</em> dans les notes, pour comprendre si certains <em>topics</em> contribuent plus ou moins à la satisfaction.</p>
+<section id="diversité-lexicale-et-lisibilité" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="diversité-lexicale-et-lisibilité"><span class="header-section-number">5.4</span> Diversité lexicale et lisibilité</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>theta<span class="ot">&lt;-</span><span class="fu">as.data.frame</span>(slda<span class="sc">$</span>theta)<span class="sc">%&gt;%</span><span class="fu">mutate</span>(<span class="at">doc_id=</span><span class="fu">as.numeric</span>(<span class="fu">row.names</span>(.)))</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>data<span class="ot">&lt;-</span><span class="fu">inner_join</span>(data, theta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Joining with `by = join_by(doc_id)`</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>foo<span class="ot">&lt;-</span>data<span class="sc">%&gt;%</span><span class="fu">select</span>(note, produit, livraison, commande, site,prix, other)<span class="sc">%&gt;%</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>note, <span class="at">names_to =</span> <span class="st">"topic"</span>, <span class="at">values_to =</span> <span class="st">"value"</span>)</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(foo,<span class="fu">aes</span>(<span class="at">x=</span>note, <span class="at">y=</span>value, <span class="at">group=</span>topic))<span class="sc">+</span></span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">position=</span><span class="st">"fill"</span>,<span class="at">stat=</span><span class="st">"identity"</span>, <span class="fu">aes</span>(<span class="at">fill=</span>topic))<span class="sc">+</span></span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">"Spectral"</span>)<span class="sc">+</span></span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="chapter5_files/figure-html/note-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Pour finir, une petite régression !</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>fit<span class="ot">&lt;-</span><span class="fu">lm</span>(note<span class="sc">~</span>produit<span class="sc">+</span>livraison<span class="sc">+</span>commande<span class="sc">+</span>site<span class="sc">+</span>prix, <span class="at">data =</span>data)</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">textstat_lexdiv</span>(dfm))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = note ~ produit + livraison + commande + site + prix, 
-    data = data)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--4.1270 -0.0206  0.1766  0.3033  1.9858 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  2.51256    0.07178   35.01   &lt;2e-16 ***
-produit      1.92260    0.11146   17.25   &lt;2e-16 ***
-livraison    2.45543    0.10907   22.51   &lt;2e-16 ***
-commande     2.44823    0.10885   22.49   &lt;2e-16 ***
-site         2.95498    0.10736   27.52   &lt;2e-16 ***
-prix         2.79509    0.10718   26.08   &lt;2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.7591 on 4310 degrees of freedom
-Multiple R-squared:  0.1952,    Adjusted R-squared:  0.1942 
-F-statistic:   209 on 5 and 4310 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre><code>  document       TTR
+1        1 1.0000000
+2        2 0.8620690
+3        3 0.9000000
+4        4 1.0000000
+5        5 0.9268293
+6        6 1.0000000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">textstat_readability</span>(corpus_new))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  document     Flesch
+1        1  24.440000
+2        2  -4.095000
+3        3  -8.278077
+4        4 -10.755000
+5        5  -7.977442
+6        6  56.978462</code></pre>
 </div>
 </div>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1367,8 +949,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./webscraping.html" class="pagination-link" aria-label="Webscraping">
-        <span class="nav-page-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Webscraping</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./chapter6.html" class="pagination-link" aria-label="*Topic Analysis*">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title"><em>Topic Analysis</em></span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

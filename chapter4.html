@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -115,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter4.html">Niveau 2 : Approfondissements</a></li><li class="breadcrumb-item"><a href="./chapter4.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Annotations et dépendances syntaxiques</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter1.html">Niveau 1 : Initiation</a></li><li class="breadcrumb-item"><a href="./chapter4.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Annotations et dépendances syntaxiques</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -177,6 +177,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Analyse du sentiment</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter4.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Annotations et dépendances syntaxiques</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -190,14 +196,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapter4.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Annotations et dépendances syntaxiques</span></span></a>
+  <a href="./chapter5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Rappel sur les pré-traitements</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapter5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title"><em>Topic Analysis</em></span></span></a>
+  <a href="./chapter6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title"><em>Topic Analysis</em></span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter8.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">LLM</span></span></a>
   </div>
 </li>
       </ul>
@@ -235,25 +253,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#les-données" id="toc-les-données" class="nav-link active" data-scroll-target="#les-données"><span class="header-section-number">5</span> Les données</a></li>
-  <li><a href="#les-traitements-préliminaires" id="toc-les-traitements-préliminaires" class="nav-link" data-scroll-target="#les-traitements-préliminaires"><span class="header-section-number">6</span> Les traitements préliminaires</a></li>
-  <li><a href="#co-occurrences" id="toc-co-occurrences" class="nav-link" data-scroll-target="#co-occurrences"><span class="header-section-number">7</span> Co-occurrences</a>
+  <li><a href="#les-données" id="toc-les-données" class="nav-link active" data-scroll-target="#les-données"><span class="header-section-number">4.1</span> Les données</a></li>
+  <li><a href="#les-traitements-préliminaires" id="toc-les-traitements-préliminaires" class="nav-link" data-scroll-target="#les-traitements-préliminaires"><span class="header-section-number">4.2</span> Les traitements préliminaires</a></li>
+  <li><a href="#co-occurrences" id="toc-co-occurrences" class="nav-link" data-scroll-target="#co-occurrences"><span class="header-section-number">4.3</span> Co-occurrences</a></li>
+  <li><a href="#annotations" id="toc-annotations" class="nav-link" data-scroll-target="#annotations"><span class="header-section-number">4.4</span> Annotations</a>
   <ul class="collapse">
-  <li><a href="#représentation-en-réseau-des-termes-co-occurents" id="toc-représentation-en-réseau-des-termes-co-occurents" class="nav-link" data-scroll-target="#représentation-en-réseau-des-termes-co-occurents"><span class="header-section-number">7.1</span> Représentation en réseau des termes co-occurents</a></li>
+  <li><a href="#détecter-les-langues" id="toc-détecter-les-langues" class="nav-link" data-scroll-target="#détecter-les-langues"><span class="header-section-number">4.4.1</span> Détecter les langues</a></li>
+  <li><a href="#pos" id="toc-pos" class="nav-link" data-scroll-target="#pos"><span class="header-section-number">4.4.2</span> POS</a></li>
   </ul></li>
-  <li><a href="#annotations" id="toc-annotations" class="nav-link" data-scroll-target="#annotations"><span class="header-section-number">8</span> Annotations</a>
-  <ul class="collapse">
-  <li><a href="#détecter-les-langues" id="toc-détecter-les-langues" class="nav-link" data-scroll-target="#détecter-les-langues"><span class="header-section-number">8.1</span> Détecter les langues</a></li>
-  <li><a href="#pos" id="toc-pos" class="nav-link" data-scroll-target="#pos"><span class="header-section-number">8.2</span> POS</a></li>
-  </ul></li>
-  <li><a href="#les-dépendances-syntaxiques" id="toc-les-dépendances-syntaxiques" class="nav-link" data-scroll-target="#les-dépendances-syntaxiques"><span class="header-section-number">9</span> Les dépendances syntaxiques</a></li>
+  <li><a href="#les-dépendances-syntaxiques" id="toc-les-dépendances-syntaxiques" class="nav-link" data-scroll-target="#les-dépendances-syntaxiques"><span class="header-section-number">4.5</span> Les dépendances syntaxiques</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/SB427/NLP_ED/edit/main/chapter4.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter4.html">Niveau 2 : Approfondissements</a></li><li class="breadcrumb-item"><a href="./chapter4.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Annotations et dépendances syntaxiques</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chapter1.html">Niveau 1 : Initiation</a></li><li class="breadcrumb-item"><a href="./chapter4.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Annotations et dépendances syntaxiques</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Annotations et dépendances syntaxiques</span></h1>
 </div>
@@ -281,8 +296,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">display.brewer.all</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="les-données" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Les données</h1>
+<section id="les-données" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="les-données"><span class="header-section-number">4.1</span> Les données</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/data_trustpilot_oiseaux.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -330,8 +345,8 @@ dbl (3): id, year, note
 </div>
 </div>
 </section>
-<section id="les-traitements-préliminaires" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Les traitements préliminaires</h1>
+<section id="les-traitements-préliminaires" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="les-traitements-préliminaires"><span class="header-section-number">4.2</span> Les traitements préliminaires</h2>
 <p>On reprend ce qu’on a fait au cours dernier, sans éliminer les termes trop fréquents :</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>corpus_oiseaux<span class="ot">&lt;-</span><span class="fu">corpus</span>(data, <span class="at">text_field =</span> <span class="st">"comments"</span>)</span>
@@ -342,8 +357,8 @@ dbl (3): id, year, note
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>dfm<span class="ot">&lt;-</span><span class="fu">dfm</span>(tok)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="co-occurrences" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> Co-occurrences</h1>
+<section id="co-occurrences" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="co-occurrences"><span class="header-section-number">4.3</span> Co-occurrences</h2>
 <p>On va maintenant constituer des bi-grammes basés sur de nombreuses co-occurrences entre les termes :</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># textstat_collocations(tok)</span></span>
@@ -496,65 +511,37 @@ text400 :
 </div>
 </div>
 </div>
-<section id="représentation-en-réseau-des-termes-co-occurents" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="représentation-en-réseau-des-termes-co-occurents"><span class="header-section-number">7.1</span> Représentation en réseau des termes co-occurents</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># fcm_cooc&lt;-fcm(dfm_cooc2)</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co"># fcm_cooc</span></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># topfeatures(fcm_cooc)</span></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co"># dim(fcm_cooc)</span></span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co"># feat&lt;-names(topfeatures(fcm_cooc, 50))</span></span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="co"># fcm_cooc_select&lt;-fcm_select(fcm_cooc, pattern = feat, selection = "keep")</span></span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="co"># dim(fcm_cooc_select)</span></span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="co"># textplot_network(fcm_cooc_select, min_freq = 0.8, edge_color = "red" , edge_alpha = 0.5, vertex_color = "blue",vertex_size = 3, vertex_labelcolor = "darkblue", omit_isolated = FALSE)</span></span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="co"># tpfeat&lt;-tibble(feat=names(topfeatures(fcm_cooc,50)),n=topfeatures(fcm_cooc,50))</span></span>
-<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a><span class="co"># tpfeat&lt;-tpfeat%&gt;%mutate(taille=n/150)</span></span>
-<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a><span class="co"># textplot_network(fcm_cooc_select, min_freq = 0.8, edge_color = "red" , edge_alpha = 0.5, vertex_color = "blue",vertex_size = tpfeat$taille, vertex_labelcolor = "darkblue", omit_isolated = FALSE)</span></span>
-<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a><span class="co"># textplot_network(fcm_cooc_select, min_freq = 0.8, edge_color = "red" , edge_alpha = 0.5, vertex_color = "blue", vertex_labelsize =  tpfeat$taille, vertex_labelcolor = "darkblue", omit_isolated = FALSE)</span></span>
-<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a><span class="co"># textplot_network(fcm_cooc_select, min_freq = 0.8, edge_color = "red" , edge_alpha = 0.5, vertex_color = "blue",vertex_size = tpfeat$taille, vertex_labelsize =  tpfeat$taille, vertex_labelcolor = "darkblue", omit_isolated = FALSE)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 </section>
-</section>
-<section id="annotations" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> Annotations</h1>
+<section id="annotations" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="annotations"><span class="header-section-number">4.4</span> Annotations</h2>
 <p>Pour cette partie, on repart du jeu de données brut.</p>
-<section id="détecter-les-langues" class="level2" data-number="8.1">
-<h2 data-number="8.1" class="anchored" data-anchor-id="détecter-les-langues"><span class="header-section-number">8.1</span> Détecter les langues</h2>
+<section id="détecter-les-langues" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="détecter-les-langues"><span class="header-section-number">4.4.1</span> Détecter les langues</h3>
 <p>Dans le cas d’un corpus composé de plusieurs langues (par exemple, un corpus extrait de twitter), il peut être intéressant de filtrer le corpus à partir de la langue. On utilise un algorithme, qui peut être long à exécuter selon la taille du corpus, et qui est plutôt performant : cld3. Il repose sur un réseau de neurones développé par <a href="https://github.com/ropensci/cld3/blob/master/README.md">Google</a></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cld3)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>langue<span class="ot">&lt;-</span><span class="fu">detect_language</span>(data<span class="sc">$</span>comments)</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># data$langue</span></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>data_fr<span class="ot">&lt;-</span>data<span class="sc">%&gt;%</span><span class="fu">filter</span>(langue<span class="sc">==</span><span class="st">"fr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cld3)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>langue<span class="ot">&lt;-</span><span class="fu">detect_language</span>(data<span class="sc">$</span>comments)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># data$langue</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>data_fr<span class="ot">&lt;-</span>data<span class="sc">%&gt;%</span><span class="fu">filter</span>(langue<span class="sc">==</span><span class="st">"fr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="pos" class="level2" data-number="8.2">
-<h2 data-number="8.2" class="anchored" data-anchor-id="pos"><span class="header-section-number">8.2</span> POS</h2>
+<section id="pos" class="level3" data-number="4.4.2">
+<h3 data-number="4.4.2" class="anchored" data-anchor-id="pos"><span class="header-section-number">4.4.2</span> POS</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cleanNLP)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co"># cnlp_init_udpipe(model_name = "french")</span></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="co"># annotate&lt;-cnlp_annotate(data$comments, verbose = 100)</span></span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ann_token&lt;-annotate$token</span></span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="co"># write_csv2(ann_token, "annotation_oiseaux.csv")</span></span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="co"># write_rds(ann_token,"annotation_oiseaux.rds")</span></span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>ann_token<span class="ot">&lt;-</span><span class="fu">read_rds</span>(<span class="st">"data/annotation_oiseaux.rds"</span>)</span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ann_token<span class="sc">%&gt;%</span><span class="fu">filter</span>(upos<span class="sc">==</span><span class="st">"ADJ"</span><span class="sc">|</span>upos<span class="sc">==</span><span class="st">"NOUN"</span><span class="sc">|</span>upos<span class="sc">==</span><span class="st">"VERB"</span>),<span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cleanNLP)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co"># cnlp_init_udpipe(model_name = "french")</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="co"># annotate&lt;-cnlp_annotate(data$comments, verbose = 100)</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ann_token&lt;-annotate$token</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="co"># write_csv2(ann_token, "annotation_oiseaux.csv")</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="co"># write_rds(ann_token,"annotation_oiseaux.rds")</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>ann_token<span class="ot">&lt;-</span><span class="fu">read_rds</span>(<span class="st">"data/annotation_oiseaux.rds"</span>)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ann_token<span class="sc">%&gt;%</span><span class="fu">filter</span>(upos<span class="sc">==</span><span class="st">"ADJ"</span><span class="sc">|</span>upos<span class="sc">==</span><span class="st">"NOUN"</span><span class="sc">|</span>upos<span class="sc">==</span><span class="st">"VERB"</span>),<span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 15 × 11
    doc_id   sid tid   token    token_with_ws lemma  upos  xpos  feats tid_source
@@ -576,7 +563,7 @@ text400 :
 15      2     2 8     rapide   "rapide"      rapide ADJ   &lt;NA&gt;  Gend… 6         
 # ℹ 1 more variable: relation &lt;chr&gt;</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>ann_token<span class="sc">%&gt;%</span><span class="fu">filter</span>(upos<span class="sc">==</span><span class="st">"ADJ"</span><span class="sc">|</span>upos<span class="sc">==</span><span class="st">"NOUN"</span><span class="sc">|</span>upos<span class="sc">==</span><span class="st">"VERB"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>ann_token<span class="sc">%&gt;%</span><span class="fu">filter</span>(upos<span class="sc">==</span><span class="st">"ADJ"</span><span class="sc">|</span>upos<span class="sc">==</span><span class="st">"NOUN"</span><span class="sc">|</span>upos<span class="sc">==</span><span class="st">"VERB"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 34,232 × 11
    doc_id   sid tid   token    token_with_ws lemma  upos  xpos  feats tid_source
@@ -594,16 +581,16 @@ text400 :
 # ℹ 34,222 more rows
 # ℹ 1 more variable: relation &lt;chr&gt;</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>g<span class="ot">&lt;-</span>ann_token<span class="sc">%&gt;%</span><span class="fu">group_by</span>(upos)<span class="sc">%&gt;%</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n=</span><span class="fu">n</span>())<span class="sc">%&gt;%</span></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(upos))</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(g)<span class="sc">+</span></span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="fu">reorder</span>(upos,n),n, <span class="at">fill=</span>n), <span class="at">show.legend =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_fermenter</span>(<span class="at">palette =</span> <span class="st">"PuRd"</span>, <span class="at">direction =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Fréquence des UPOS"</span>, <span class="at">subtitle =</span> <span class="st">"Corpus Oiseaux Mania"</span>, <span class="at">caption =</span> <span class="st">"Data TrustPilot"</span>, <span class="at">x=</span><span class="cn">NULL</span>, <span class="at">y=</span><span class="cn">NULL</span>)<span class="sc">+</span></span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_dark</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>g<span class="ot">&lt;-</span>ann_token<span class="sc">%&gt;%</span><span class="fu">group_by</span>(upos)<span class="sc">%&gt;%</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n=</span><span class="fu">n</span>())<span class="sc">%&gt;%</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(upos))</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(g)<span class="sc">+</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="fu">reorder</span>(upos,n),n, <span class="at">fill=</span>n), <span class="at">show.legend =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_fermenter</span>(<span class="at">palette =</span> <span class="st">"PuRd"</span>, <span class="at">direction =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Fréquence des UPOS"</span>, <span class="at">subtitle =</span> <span class="st">"Corpus Oiseaux Mania"</span>, <span class="at">caption =</span> <span class="st">"Data TrustPilot"</span>, <span class="at">x=</span><span class="cn">NULL</span>, <span class="at">y=</span><span class="cn">NULL</span>)<span class="sc">+</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_dark</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -614,16 +601,16 @@ text400 :
 </div>
 <p>Maintenant, on va s’intéresser à des catégories grammaticales spécifiques :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>vocab1<span class="ot">&lt;-</span>ann_token<span class="sc">%&gt;%</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(upos<span class="sc">==</span><span class="st">"NOUN"</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">freq=</span><span class="fu">n</span>(),<span class="at">.by=</span>lemma)<span class="sc">%&gt;%</span></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(freq<span class="sc">&gt;</span><span class="dv">55</span>)</span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(vocab1,<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(lemma,freq),<span class="at">y=</span>freq))<span class="sc">+</span></span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>,<span class="at">fill=</span><span class="st">"lightgreen"</span>)<span class="sc">+</span></span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Noms communs les plus fréquents"</span>,<span class="at">subtitle =</span> <span class="st">"Corpus Oiseaux Mania"</span>, <span class="at">caption=</span><span class="st">"Data : TrustPilot"</span>,<span class="at">x=</span><span class="st">"Noms commun"</span>,<span class="at">y=</span><span class="st">"Fréquence"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>vocab1<span class="ot">&lt;-</span>ann_token<span class="sc">%&gt;%</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(upos<span class="sc">==</span><span class="st">"NOUN"</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">freq=</span><span class="fu">n</span>(),<span class="at">.by=</span>lemma)<span class="sc">%&gt;%</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(freq<span class="sc">&gt;</span><span class="dv">55</span>)</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(vocab1,<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(lemma,freq),<span class="at">y=</span>freq))<span class="sc">+</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>,<span class="at">fill=</span><span class="st">"lightgreen"</span>)<span class="sc">+</span></span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Noms communs les plus fréquents"</span>,<span class="at">subtitle =</span> <span class="st">"Corpus Oiseaux Mania"</span>, <span class="at">caption=</span><span class="st">"Data : TrustPilot"</span>,<span class="at">x=</span><span class="st">"Noms commun"</span>,<span class="at">y=</span><span class="st">"Fréquence"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -631,16 +618,16 @@ text400 :
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>vocab1bis<span class="ot">&lt;-</span>ann_token<span class="sc">%&gt;%</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(upos<span class="sc">==</span><span class="st">"ADJ"</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">freq=</span><span class="fu">n</span>(),<span class="at">.by=</span>lemma)<span class="sc">%&gt;%</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(freq<span class="sc">&gt;</span><span class="dv">55</span>)</span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(vocab1bis,<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(lemma,freq),<span class="at">y=</span>freq))<span class="sc">+</span></span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>,<span class="at">fill=</span><span class="st">"darkblue"</span>)<span class="sc">+</span></span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Adjectifs les plus fréquents"</span>,<span class="at">subtitle =</span> <span class="st">"Corpus Oiseaux Mania"</span>, <span class="at">caption=</span><span class="st">"Data : TrustPilot"</span>,<span class="at">x=</span><span class="st">"Adjectifs"</span>,<span class="at">y=</span><span class="st">"Fréquence"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>vocab1bis<span class="ot">&lt;-</span>ann_token<span class="sc">%&gt;%</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(upos<span class="sc">==</span><span class="st">"ADJ"</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">freq=</span><span class="fu">n</span>(),<span class="at">.by=</span>lemma)<span class="sc">%&gt;%</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(freq<span class="sc">&gt;</span><span class="dv">55</span>)</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(vocab1bis,<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(lemma,freq),<span class="at">y=</span>freq))<span class="sc">+</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>,<span class="at">fill=</span><span class="st">"darkblue"</span>)<span class="sc">+</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Adjectifs les plus fréquents"</span>,<span class="at">subtitle =</span> <span class="st">"Corpus Oiseaux Mania"</span>, <span class="at">caption=</span><span class="st">"Data : TrustPilot"</span>,<span class="at">x=</span><span class="st">"Adjectifs"</span>,<span class="at">y=</span><span class="st">"Fréquence"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -648,18 +635,18 @@ text400 :
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>vocab2<span class="ot">&lt;-</span>ann_token<span class="sc">%&gt;%</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(upos<span class="sc">==</span><span class="st">"NOUN"</span> <span class="sc">|</span> upos<span class="sc">==</span><span class="st">"VERB"</span> <span class="sc">|</span> upos<span class="sc">==</span><span class="st">"ADJ"</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">freq=</span><span class="fu">n</span>(),<span class="at">.by=</span><span class="fu">c</span>(lemma,upos))<span class="sc">%&gt;%</span></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(freq<span class="sc">&gt;</span><span class="dv">30</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">angle=</span> <span class="dv">90</span> <span class="sc">*</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="fu">n</span>(), <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="dv">75</span>, <span class="dv">25</span>)))</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggwordcloud)</span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(vocab2)<span class="sc">+</span></span>
-<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_wordcloud_area</span>(<span class="fu">aes</span>(<span class="at">label=</span>lemma, <span class="at">size=</span>freq, <span class="at">color=</span>freq, <span class="at">angle=</span>angle))<span class="sc">+</span></span>
-<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_area</span>(<span class="at">max_size =</span> <span class="dv">24</span>)<span class="sc">+</span></span>
-<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_fermenter</span>(<span class="at">palette =</span> <span class="st">"Set2"</span>)<span class="sc">+</span></span>
-<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>vocab2<span class="ot">&lt;-</span>ann_token<span class="sc">%&gt;%</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(upos<span class="sc">==</span><span class="st">"NOUN"</span> <span class="sc">|</span> upos<span class="sc">==</span><span class="st">"VERB"</span> <span class="sc">|</span> upos<span class="sc">==</span><span class="st">"ADJ"</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">freq=</span><span class="fu">n</span>(),<span class="at">.by=</span><span class="fu">c</span>(lemma,upos))<span class="sc">%&gt;%</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(freq<span class="sc">&gt;</span><span class="dv">30</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">angle=</span> <span class="dv">90</span> <span class="sc">*</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="fu">n</span>(), <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="dv">75</span>, <span class="dv">25</span>)))</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggwordcloud)</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(vocab2)<span class="sc">+</span></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_wordcloud_area</span>(<span class="fu">aes</span>(<span class="at">label=</span>lemma, <span class="at">size=</span>freq, <span class="at">color=</span>freq, <span class="at">angle=</span>angle))<span class="sc">+</span></span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_area</span>(<span class="at">max_size =</span> <span class="dv">24</span>)<span class="sc">+</span></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_fermenter</span>(<span class="at">palette =</span> <span class="st">"Set2"</span>)<span class="sc">+</span></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -667,11 +654,11 @@ text400 :
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(vocab2)<span class="sc">+</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_wordcloud_area</span>(<span class="fu">aes</span>(<span class="at">label=</span>lemma, <span class="at">size=</span>freq, <span class="at">color=</span>upos, <span class="at">angle=</span>angle))<span class="sc">+</span></span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_area</span>(<span class="at">max_size =</span> <span class="dv">24</span>)<span class="sc">+</span></span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"ADJ"</span><span class="ot">=</span><span class="st">"orange"</span>,<span class="st">"NOUN"</span><span class="ot">=</span><span class="st">"lightgreen"</span>,<span class="st">"VERB"</span><span class="ot">=</span><span class="st">"purple"</span>))<span class="sc">+</span></span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(vocab2)<span class="sc">+</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_wordcloud_area</span>(<span class="fu">aes</span>(<span class="at">label=</span>lemma, <span class="at">size=</span>freq, <span class="at">color=</span>upos, <span class="at">angle=</span>angle))<span class="sc">+</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_area</span>(<span class="at">max_size =</span> <span class="dv">24</span>)<span class="sc">+</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"ADJ"</span><span class="ot">=</span><span class="st">"orange"</span>,<span class="st">"NOUN"</span><span class="ot">=</span><span class="st">"lightgreen"</span>,<span class="st">"VERB"</span><span class="ot">=</span><span class="st">"purple"</span>))<span class="sc">+</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -682,42 +669,42 @@ text400 :
 </div>
 </section>
 </section>
-<section id="les-dépendances-syntaxiques" class="level1" data-number="9">
-<h1 data-number="9"><span class="header-section-number">9</span> Les dépendances syntaxiques</h1>
+<section id="les-dépendances-syntaxiques" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="les-dépendances-syntaxiques"><span class="header-section-number">4.5</span> Les dépendances syntaxiques</h2>
 <p>Quels sont les mots associés aux termes cibles ?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co">#on met à niveau la racine</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>ann_racine<span class="ot">&lt;-</span> ann_token<span class="sc">%&gt;%</span></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(ann_token,<span class="at">by=</span> <span class="fu">c</span>(<span class="st">"doc_id"</span><span class="ot">=</span><span class="st">"doc_id"</span>, <span class="st">"sid"</span><span class="ot">=</span><span class="st">"sid"</span>, <span class="st">"tid_source"</span><span class="ot">=</span><span class="st">"tid"</span>), <span class="at">suffix=</span><span class="fu">c</span>(<span class="st">""</span>, <span class="st">"_source"</span>))</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="co">#on filtre les relation nominales puis celle qui concerne les termes cibles</span></span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>foo<span class="ot">&lt;-</span>ann_racine <span class="sc">%&gt;%</span></span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(relation <span class="sc">==</span> <span class="st">"amod"</span><span class="sc">|</span>relation <span class="sc">==</span><span class="st">"acl"</span><span class="sc">|</span>relation <span class="sc">==</span><span class="st">"nmod"</span><span class="sc">|</span>relation <span class="sc">==</span><span class="st">"appos"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">qual =</span> lemma, <span class="at">source =</span> lemma_source)<span class="sc">%&gt;%</span></span>
-<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(source<span class="sc">==</span><span class="st">"commande"</span><span class="sc">|</span>source<span class="sc">==</span><span class="st">"livraison"</span><span class="sc">|</span>source<span class="sc">==</span><span class="st">"produit"</span><span class="sc">|</span>source<span class="sc">==</span><span class="st">"prix"</span>)<span class="sc">%&gt;%</span> </span>
-<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(source,qual)<span class="sc">%&gt;%</span></span>
-<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n=</span><span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co">#on met à niveau la racine</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>ann_racine<span class="ot">&lt;-</span> ann_token<span class="sc">%&gt;%</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(ann_token,<span class="at">by=</span> <span class="fu">c</span>(<span class="st">"doc_id"</span><span class="ot">=</span><span class="st">"doc_id"</span>, <span class="st">"sid"</span><span class="ot">=</span><span class="st">"sid"</span>, <span class="st">"tid_source"</span><span class="ot">=</span><span class="st">"tid"</span>), <span class="at">suffix=</span><span class="fu">c</span>(<span class="st">""</span>, <span class="st">"_source"</span>))</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="co">#on filtre les relation nominales puis celle qui concerne les termes cibles</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>foo<span class="ot">&lt;-</span>ann_racine <span class="sc">%&gt;%</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(relation <span class="sc">==</span> <span class="st">"amod"</span><span class="sc">|</span>relation <span class="sc">==</span><span class="st">"acl"</span><span class="sc">|</span>relation <span class="sc">==</span><span class="st">"nmod"</span><span class="sc">|</span>relation <span class="sc">==</span><span class="st">"appos"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="at">qual =</span> lemma, <span class="at">source =</span> lemma_source)<span class="sc">%&gt;%</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(source<span class="sc">==</span><span class="st">"commande"</span><span class="sc">|</span>source<span class="sc">==</span><span class="st">"livraison"</span><span class="sc">|</span>source<span class="sc">==</span><span class="st">"produit"</span><span class="sc">|</span>source<span class="sc">==</span><span class="st">"prix"</span>)<span class="sc">%&gt;%</span> </span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(source,qual)<span class="sc">%&gt;%</span></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n=</span><span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'source'. You can override using the
 `.groups` argument.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On remet en forme les données</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>foo1<span class="ot">&lt;-</span>foo<span class="sc">%&gt;%</span></span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> source, <span class="at">values_from =</span> n)<span class="sc">%&gt;%</span></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span><span class="fu">replace_na</span>(.x,<span class="dv">0</span>)))<span class="sc">%&gt;%</span></span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sum=</span><span class="fu">rowSums</span>(.[,<span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>]))<span class="sc">%&gt;%</span></span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sum<span class="sc">&gt;</span><span class="dv">15</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>sum)<span class="sc">%&gt;%</span></span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">!</span>qual, <span class="at">names_to =</span> <span class="st">"source"</span>, <span class="at">values_to =</span> <span class="st">"n"</span>)</span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(foo1,<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(qual,n), <span class="at">y=</span>n, <span class="at">group=</span>source))<span class="sc">+</span></span>
-<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>,<span class="fu">aes</span>(<span class="at">fill=</span>source),<span class="at">position=</span><span class="fu">position_dodge</span>())<span class="sc">+</span></span>
-<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
-<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">"Spectral"</span>,<span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span> </span>
-<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>( <span class="at">title=</span><span class="st">"Analyse des dépendances nominales"</span>, <span class="at">subtitle =</span> <span class="st">"les termes du site et du service"</span>,<span class="at">caption =</span> <span class="st">"Data : TrustPilot sur Oiseaux Mania"</span>, <span class="at">x=</span><span class="st">"tokens dépendants"</span>, <span class="at">y=</span><span class="st">"Fréquence"</span>, <span class="at">fill=</span><span class="st">"Termes"</span>)<span class="sc">+</span></span>
-<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>source, <span class="at">ncol =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># On remet en forme les données</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>foo1<span class="ot">&lt;-</span>foo<span class="sc">%&gt;%</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> source, <span class="at">values_from =</span> n)<span class="sc">%&gt;%</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span><span class="fu">replace_na</span>(.x,<span class="dv">0</span>)))<span class="sc">%&gt;%</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sum=</span><span class="fu">rowSums</span>(.[,<span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>]))<span class="sc">%&gt;%</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sum<span class="sc">&gt;</span><span class="dv">15</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>sum)<span class="sc">%&gt;%</span></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">!</span>qual, <span class="at">names_to =</span> <span class="st">"source"</span>, <span class="at">values_to =</span> <span class="st">"n"</span>)</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(foo1,<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">reorder</span>(qual,n), <span class="at">y=</span>n, <span class="at">group=</span>source))<span class="sc">+</span></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>,<span class="fu">aes</span>(<span class="at">fill=</span>source),<span class="at">position=</span><span class="fu">position_dodge</span>())<span class="sc">+</span></span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>()<span class="sc">+</span></span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">"Spectral"</span>,<span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()<span class="sc">+</span> </span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>( <span class="at">title=</span><span class="st">"Analyse des dépendances nominales"</span>, <span class="at">subtitle =</span> <span class="st">"les termes du site et du service"</span>,<span class="at">caption =</span> <span class="st">"Data : TrustPilot sur Oiseaux Mania"</span>, <span class="at">x=</span><span class="st">"tokens dépendants"</span>, <span class="at">y=</span><span class="st">"Fréquence"</span>, <span class="at">fill=</span><span class="st">"Termes"</span>)<span class="sc">+</span></span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>source, <span class="at">ncol =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1147,8 +1134,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./chapter5.html" class="pagination-link" aria-label="*Topic Analysis*">
-        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title"><em>Topic Analysis</em></span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./chapter5.html" class="pagination-link" aria-label="Rappel sur les pré-traitements">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Rappel sur les pré-traitements</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -177,6 +177,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Analyse du sentiment</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Annotations et dépendances syntaxiques</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -190,14 +196,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapter4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Annotations et dépendances syntaxiques</span></span></a>
+  <a href="./chapter5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Rappel sur les pré-traitements</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapter5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title"><em>Topic Analysis</em></span></span></a>
+  <a href="./chapter6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title"><em>Topic Analysis</em></span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter8.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">LLM</span></span></a>
   </div>
 </li>
       </ul>
@@ -235,17 +253,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#les-données" id="toc-les-données" class="nav-link active" data-scroll-target="#les-données"><span class="header-section-number">4</span> Les données</a></li>
-  <li><a href="#sentiment-analysis" id="toc-sentiment-analysis" class="nav-link" data-scroll-target="#sentiment-analysis"><span class="header-section-number">5</span> <em>Sentiment analysis</em></a>
+  <li><a href="#les-données" id="toc-les-données" class="nav-link active" data-scroll-target="#les-données"><span class="header-section-number">3.1</span> Les données</a></li>
+  <li><a href="#sentiment-analysis" id="toc-sentiment-analysis" class="nav-link" data-scroll-target="#sentiment-analysis"><span class="header-section-number">3.2</span> <em>Sentiment analysis</em></a>
   <ul class="collapse">
-  <li><a href="#les-sentiments" id="toc-les-sentiments" class="nav-link" data-scroll-target="#les-sentiments"><span class="header-section-number">5.1</span> Les sentiments</a></li>
-  <li><a href="#les-émotions" id="toc-les-émotions" class="nav-link" data-scroll-target="#les-émotions"><span class="header-section-number">5.2</span> Les émotions</a></li>
+  <li><a href="#les-sentiments" id="toc-les-sentiments" class="nav-link" data-scroll-target="#les-sentiments"><span class="header-section-number">3.2.1</span> Les sentiments</a></li>
+  <li><a href="#les-émotions" id="toc-les-émotions" class="nav-link" data-scroll-target="#les-émotions"><span class="header-section-number">3.2.2</span> Les émotions</a></li>
   </ul></li>
-  <li><a href="#évolution-du-corpus-dans-le-temps" id="toc-évolution-du-corpus-dans-le-temps" class="nav-link" data-scroll-target="#évolution-du-corpus-dans-le-temps"><span class="header-section-number">6</span> Évolution du corpus dans le temps</a></li>
-  <li><a href="#nuage-de-mots-comparés" id="toc-nuage-de-mots-comparés" class="nav-link" data-scroll-target="#nuage-de-mots-comparés"><span class="header-section-number">7</span> Nuage de mots comparés</a>
+  <li><a href="#évolution-du-corpus-dans-le-temps" id="toc-évolution-du-corpus-dans-le-temps" class="nav-link" data-scroll-target="#évolution-du-corpus-dans-le-temps"><span class="header-section-number">3.3</span> Évolution du corpus dans le temps</a></li>
+  <li><a href="#nuage-de-mots-comparés" id="toc-nuage-de-mots-comparés" class="nav-link" data-scroll-target="#nuage-de-mots-comparés"><span class="header-section-number">3.4</span> Nuage de mots comparés</a>
   <ul class="collapse">
-  <li><a href="#en-fonction-des-années" id="toc-en-fonction-des-années" class="nav-link" data-scroll-target="#en-fonction-des-années"><span class="header-section-number">7.1</span> En fonction des années</a></li>
-  <li><a href="#en-fonction-des-sentiments" id="toc-en-fonction-des-sentiments" class="nav-link" data-scroll-target="#en-fonction-des-sentiments"><span class="header-section-number">7.2</span> En fonction des sentiments</a></li>
+  <li><a href="#en-fonction-des-années" id="toc-en-fonction-des-années" class="nav-link" data-scroll-target="#en-fonction-des-années"><span class="header-section-number">3.4.1</span> En fonction des années</a></li>
+  <li><a href="#en-fonction-des-sentiments" id="toc-en-fonction-des-sentiments" class="nav-link" data-scroll-target="#en-fonction-des-sentiments"><span class="header-section-number">3.4.2</span> En fonction des sentiments</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/SB427/NLP_ED/edit/main/chapter3.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
@@ -285,14 +303,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">display.brewer.all</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="les-données" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Les données</h1>
+<section id="les-données" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="les-données"><span class="header-section-number">3.1</span> Les données</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/data_trustpilot_oiseaux.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="sentiment-analysis" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> <em>Sentiment analysis</em></h1>
+<section id="sentiment-analysis" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="sentiment-analysis"><span class="header-section-number">3.2</span> <em>Sentiment analysis</em></h2>
 <p>On va réaliser une analyse du sentiment du corpus. Pour cela, on utilise le dictionnaire des sentiments et émotions NRC, car il est disponible dans 40 langues, dont le français. Il existe d’autres dictionnaires de sentiments (positif vs négatif), par exemple AFINN ou BING, ainsi que des dictionnaires thématiques (LIWC par exemple), mais ils sont en anglais ou payants, donc utilisables pour des corpus en anglais ou lorsqu’on dispose d’un budget. Les dernières évolutions du traitement en langage naturel des IA (transformers et autres, dont ChatGPT est un exemple), permettent d’autres approches très pertinentes, en utilisant le <em>machine learning</em>, mais cela va au-delà des objectifs de ce cours.</p>
 <p>Ici, on utilise le dictionnaire NRC à travers le package <em>syuzhet</em>. La fonction <em>get_nrc_sentiment</em> prend en entrée un vecteur de type caractère.</p>
 <div class="cell">
@@ -350,8 +368,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<section id="les-sentiments" class="level2" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="les-sentiments"><span class="header-section-number">5.1</span> Les sentiments</h2>
+<section id="les-sentiments" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="les-sentiments"><span class="header-section-number">3.2.1</span> Les sentiments</h3>
 <p>Intéressons-nous d’abord aux sentiments :</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sent<span class="ot">&lt;-</span>d<span class="sc">%&gt;%</span></span>
@@ -393,6 +411,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 </div>
+</div>
+<p><strong>Solution :</strong></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Solution</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data<span class="ot">&lt;-</span>data<span class="sc">%&gt;%</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">nbcar=</span><span class="fu">nchar</span>(comments),</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>         expressivité <span class="ot">=</span> positive<span class="sc">+</span>negative)</span>
@@ -402,17 +425,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>()<span class="sc">+</span></span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Indicateur d'expressivité"</span>, <span class="at">subtitle =</span> <span class="st">"en fonction du nombre de caractères"</span>, <span class="at">caption=</span><span class="st">"Données TrustPilot"</span>)<span class="sc">+</span></span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="chapter3_files/figure-html/viz_expr-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="chapter3_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="les-émotions" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="les-émotions"><span class="header-section-number">5.2</span> Les émotions</h2>
+<section id="les-émotions" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="les-émotions"><span class="header-section-number">3.2.2</span> Les émotions</h3>
 <p>Regardons maintenant ce qu’il en est de la répartition des émotions :</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#On crée d'abord une palette pour les émotions</span></span>
@@ -469,8 +493,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="évolution-du-corpus-dans-le-temps" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Évolution du corpus dans le temps</h1>
+<section id="évolution-du-corpus-dans-le-temps" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="évolution-du-corpus-dans-le-temps"><span class="header-section-number">3.3</span> Évolution du corpus dans le temps</h2>
 <p>On va regarder comment les sentiments évoluent dans le temps. On doit tout d’abord créer une variable temporel dans notre jeu de données. Nous en avons déjà une, qui indique la date et l’heure à laquelle le commentaire a été posté. Nous allons la transformer pour regrouper les commentaires en fonction de l’année (on peut le faire pour les jours, les mois, les minutes, …).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">%&gt;%</span><span class="fu">group_by</span>(year)<span class="sc">%&gt;%</span><span class="fu">summarise</span>(<span class="st">'nb com'</span><span class="ot">=</span><span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -539,10 +563,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Maintenant, on va s’intéresser aux mots.</p>
 </section>
-<section id="nuage-de-mots-comparés" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> Nuage de mots comparés</h1>
-<section id="en-fonction-des-années" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="en-fonction-des-années"><span class="header-section-number">7.1</span> En fonction des années</h2>
+<section id="nuage-de-mots-comparés" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="nuage-de-mots-comparés"><span class="header-section-number">3.4</span> Nuage de mots comparés</h2>
+<section id="en-fonction-des-années" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="en-fonction-des-années"><span class="header-section-number">3.4.1</span> En fonction des années</h3>
 <p>On refait les manipulations préliminaires :</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>data<span class="ot">&lt;-</span>data<span class="sc">%&gt;%</span></span>
@@ -585,8 +609,8 @@ docs        comme toujours super service changez rien sauf peut être là
 </div>
 </div>
 </section>
-<section id="en-fonction-des-sentiments" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="en-fonction-des-sentiments"><span class="header-section-number">7.2</span> En fonction des sentiments</h2>
+<section id="en-fonction-des-sentiments" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="en-fonction-des-sentiments"><span class="header-section-number">3.4.2</span> En fonction des sentiments</h3>
 <p>Pour comparer en fonction des sentiments, il faut accéder au dictionnaire NRC (en français) (il y a des fonctions simplifiées pour les dictionnaires en anglais) :</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>dic_nrc<span class="ot">&lt;-</span><span class="fu">read_xlsx</span>(<span class="st">"NRCfr.xlsx"</span>)<span class="sc">%&gt;%</span></span>

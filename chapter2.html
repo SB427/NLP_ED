@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -206,6 +206,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Analyse du sentiment</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Annotations et dépendances syntaxiques</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -219,14 +225,26 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapter4.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Annotations et dépendances syntaxiques</span></span></a>
+  <a href="./chapter5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Rappel sur les pré-traitements</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chapter5.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title"><em>Topic Analysis</em></span></span></a>
+  <a href="./chapter6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title"><em>Topic Analysis</em></span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter7.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Vectorisation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapter8.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">LLM</span></span></a>
   </div>
 </li>
       </ul>
@@ -264,18 +282,20 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">2.1</span> Introduction</a></li>
-  <li><a href="#les-données" id="toc-les-données" class="nav-link" data-scroll-target="#les-données"><span class="header-section-number">2.2</span> Les données</a></li>
-  <li><a href="#premières-analyses-des-données" id="toc-premières-analyses-des-données" class="nav-link" data-scroll-target="#premières-analyses-des-données"><span class="header-section-number">2.3</span> Premières analyses des données</a></li>
-  <li><a href="#création-du-corpus-et-premières-observations-du-corpus" id="toc-création-du-corpus-et-premières-observations-du-corpus" class="nav-link" data-scroll-target="#création-du-corpus-et-premières-observations-du-corpus"><span class="header-section-number">3</span> Création du corpus et premières observations du corpus</a></li>
-  <li><a href="#nettoyage-du-corpus" id="toc-nettoyage-du-corpus" class="nav-link" data-scroll-target="#nettoyage-du-corpus"><span class="header-section-number">4</span> Nettoyage du corpus</a></li>
-  <li><a href="#filtrer-le-corpus-des-termes-trop-fréquents" id="toc-filtrer-le-corpus-des-termes-trop-fréquents" class="nav-link" data-scroll-target="#filtrer-le-corpus-des-termes-trop-fréquents"><span class="header-section-number">5</span> Filtrer le corpus des termes trop fréquents</a></li>
-  <li><a href="#la-loi-de-zipf" id="toc-la-loi-de-zipf" class="nav-link" data-scroll-target="#la-loi-de-zipf"><span class="header-section-number">6</span> La loi de Zipf</a></li>
-  <li><a href="#mesures-de-fréquence" id="toc-mesures-de-fréquence" class="nav-link" data-scroll-target="#mesures-de-fréquence"><span class="header-section-number">7</span> Mesures de fréquence</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">2.1</span> Introduction</a>
   <ul class="collapse">
-  <li><a href="#pondération-tf-idf" id="toc-pondération-tf-idf" class="nav-link" data-scroll-target="#pondération-tf-idf"><span class="header-section-number">7.1</span> Pondération tf-idf</a></li>
+  <li><a href="#les-données" id="toc-les-données" class="nav-link" data-scroll-target="#les-données"><span class="header-section-number">2.1.1</span> Les données</a></li>
+  <li><a href="#premières-analysesvisualisations-des-données" id="toc-premières-analysesvisualisations-des-données" class="nav-link" data-scroll-target="#premières-analysesvisualisations-des-données"><span class="header-section-number">2.1.2</span> Premières analyses/visualisations des données</a></li>
   </ul></li>
-  <li><a href="#comprendre-le-sens-des-termes" id="toc-comprendre-le-sens-des-termes" class="nav-link" data-scroll-target="#comprendre-le-sens-des-termes"><span class="header-section-number">8</span> Comprendre le sens des termes</a></li>
+  <li><a href="#création-du-corpus-et-premières-observations-du-corpus" id="toc-création-du-corpus-et-premières-observations-du-corpus" class="nav-link" data-scroll-target="#création-du-corpus-et-premières-observations-du-corpus"><span class="header-section-number">2.2</span> Création du corpus et premières observations du corpus</a></li>
+  <li><a href="#nettoyage-du-corpus" id="toc-nettoyage-du-corpus" class="nav-link" data-scroll-target="#nettoyage-du-corpus"><span class="header-section-number">2.3</span> Nettoyage du corpus</a></li>
+  <li><a href="#filtrer-le-corpus-des-termes-trop-fréquents" id="toc-filtrer-le-corpus-des-termes-trop-fréquents" class="nav-link" data-scroll-target="#filtrer-le-corpus-des-termes-trop-fréquents"><span class="header-section-number">2.4</span> Filtrer le corpus des termes trop fréquents</a></li>
+  <li><a href="#la-loi-de-zipf" id="toc-la-loi-de-zipf" class="nav-link" data-scroll-target="#la-loi-de-zipf"><span class="header-section-number">2.5</span> La loi de Zipf</a></li>
+  <li><a href="#mesures-de-fréquence" id="toc-mesures-de-fréquence" class="nav-link" data-scroll-target="#mesures-de-fréquence"><span class="header-section-number">2.6</span> Mesures de fréquence</a>
+  <ul class="collapse">
+  <li><a href="#pondération-tf-idf" id="toc-pondération-tf-idf" class="nav-link" data-scroll-target="#pondération-tf-idf"><span class="header-section-number">2.6.1</span> Pondération tf-idf</a></li>
+  </ul></li>
+  <li><a href="#comprendre-le-sens-des-termes" id="toc-comprendre-le-sens-des-termes" class="nav-link" data-scroll-target="#comprendre-le-sens-des-termes"><span class="header-section-number">2.7</span> Comprendre le sens des termes</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/SB427/NLP_ED/edit/main/chapter2.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li></ul></div></nav>
     </div>
@@ -313,9 +333,8 @@ window.Quarto = {
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Dans un premier temps, nous allons tout simplement charger la base de données de travail puis la décrire. Ensuite, nous créerons un corpus, le visualisons. Puis nous effectueront quelques analyses liminaires, avant de voir les pré-traitements à réaliser sur le corpus.</p>
-</section>
-<section id="les-données" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="les-données"><span class="header-section-number">2.2</span> Les données</h2>
+<section id="les-données" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="les-données"><span class="header-section-number">2.1.1</span> Les données</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#On charge les données, stockées dans un fichier csv</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -372,8 +391,8 @@ dbl (3): id, year, note
 </div>
 </div>
 </section>
-<section id="premières-analyses-des-données" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="premières-analyses-des-données"><span class="header-section-number">2.3</span> Premières analyses des données</h2>
+<section id="premières-analysesvisualisations-des-données" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="premières-analysesvisualisations-des-données"><span class="header-section-number">2.1.2</span> Premières analyses/visualisations des données</h3>
 <p>Avant de s’intéresser au contenu des commentaires, explorons la structure des données. On va regarder la distribution des commentaires et des notes dans le temps, et s’intéresser à la longueur des avis clients.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Les années </span></span>
@@ -523,8 +542,9 @@ dbl (3): id, year, note
 </div>
 </div>
 </section>
-<section id="création-du-corpus-et-premières-observations-du-corpus" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Création du corpus et premières observations du corpus</h1>
+</section>
+<section id="création-du-corpus-et-premières-observations-du-corpus" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="création-du-corpus-et-premières-observations-du-corpus"><span class="header-section-number">2.2</span> Création du corpus et premières observations du corpus</h2>
 <p>Tout d’abord, nous transformons le jeu de données en corpus. La variable qui contient le texte est “comments”, les autres variables vont devenir des métadonnées du corpus, c’est-à-dire des variables associées à chaque texte. Cela sera utile par le suite pour faire des analyses comparatives entre les textes suivant différentes variables (le temps en particulier, mais pas seulement).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Création du corpus</span></span>
@@ -629,8 +649,8 @@ docs    comme toujours , super service . ne changez rien !
 </div>
 <p>Pour conclure sur cette première approche du corpus, nous voyons que nos analyses sont gếnées par la présence de la ponctuation et de plein de petits mots “vides de sens” (les articles par exemple). C’est pourquoi nous allons nettoyer le corpus pour avoir une meilleure vision de ce qu’il contient.</p>
 </section>
-<section id="nettoyage-du-corpus" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Nettoyage du corpus</h1>
+<section id="nettoyage-du-corpus" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="nettoyage-du-corpus"><span class="header-section-number">2.3</span> Nettoyage du corpus</h2>
 <p>Le nettoyage du corpus pour les analyses se fait lors de la transformation en tokens. Nous allons ajouter des options pour supprimer la ponctuation, les chiffres et les stopwords (les mots qui n’apportent pas de sens sémantique mais permettent l’articulation du discours).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopwords</span>(<span class="st">"fr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -795,8 +815,8 @@ docs    comme toujours super service changez rien sauf peut être là
 </div>
 </div>
 </section>
-<section id="filtrer-le-corpus-des-termes-trop-fréquents" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Filtrer le corpus des termes trop fréquents</h1>
+<section id="filtrer-le-corpus-des-termes-trop-fréquents" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="filtrer-le-corpus-des-termes-trop-fréquents"><span class="header-section-number">2.4</span> Filtrer le corpus des termes trop fréquents</h2>
 <p>Nous allons filtrer les mots qui sont présents plus de 500 fois dans le corpus.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>dfm_trim<span class="ot">&lt;-</span><span class="fu">dfm_trim</span>(dfm, <span class="at">max_termfreq =</span> <span class="dv">500</span>)</span>
@@ -901,8 +921,8 @@ Returning the palette you asked for with that many colors</code></pre>
 </div>
 </div>
 </section>
-<section id="la-loi-de-zipf" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> La loi de Zipf</h1>
+<section id="la-loi-de-zipf" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="la-loi-de-zipf"><span class="header-section-number">2.5</span> La loi de Zipf</h2>
 <p>Vérifions la proposition de la loi de Zipf, selon laquelle la fréquence d’apparition d’un terme est inversement proportionnel à son rang.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>zipf<span class="ot">&lt;-</span><span class="fu">textstat_frequency</span>(dfm)</span>
@@ -922,11 +942,11 @@ Returning the palette you asked for with that many colors</code></pre>
 </div>
 </div>
 </section>
-<section id="mesures-de-fréquence" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> Mesures de fréquence</h1>
+<section id="mesures-de-fréquence" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="mesures-de-fréquence"><span class="header-section-number">2.6</span> Mesures de fréquence</h2>
 <p>On s’est pour l’instant intéressé uniquement aux termes les plus fréquents dans un corpus. On a vu comment éliminer les termes trop fréquents pour qu’ils nous apportent de l’information. Pour l’analyse de topics, il nous faut prendre un autre angle d’attaque : afin de détecter les sujets abordés dans un corpus, on ne peut se contenter d’observer les mots les plus fréquents, il faut s’intéresser aux termes dont la fréquence dans l’ensemble du corpus est faible, mais qui contribuent fortement à différencier les éléments du corpus entre eux (les documents). On utilise pour cela une mesure de fréquence pondérée : la <em>tf-idf</em> pour <em>term frequency - inverse document frequency</em> qui permet d’accorder plus de poids aux termes les plus discriminants du corpus. <span class="math inline">\(tf-idf= \frac{occurrence\ du\ mot\ dans\ le\ document }{nombre\ de\ mots\ dans \ le \ document}* log (\frac{nombre\ de\ documents\ dans\ le\ corpus} {nombre\ de \ documents\ dans\ lequel\ le\ mot\ apparait})\)</span></p>
-<section id="pondération-tf-idf" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="pondération-tf-idf"><span class="header-section-number">7.1</span> Pondération tf-idf</h2>
+<section id="pondération-tf-idf" class="level3" data-number="2.6.1">
+<h3 data-number="2.6.1" class="anchored" data-anchor-id="pondération-tf-idf"><span class="header-section-number">2.6.1</span> Pondération tf-idf</h3>
 <p>On commence par reprendre nos manipulations précédentes : création de corpus, élimination des stopwords, constitution de bi- ou tri- grammes. On applique ensuite la pondération tf-idf.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>dfmtfidf<span class="ot">&lt;-</span><span class="fu">dfm_tfidf</span>(dfm)</span>
@@ -1002,8 +1022,8 @@ docs        être       là
 </div>
 </section>
 </section>
-<section id="comprendre-le-sens-des-termes" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> Comprendre le sens des termes</h1>
+<section id="comprendre-le-sens-des-termes" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="comprendre-le-sens-des-termes"><span class="header-section-number">2.7</span> Comprendre le sens des termes</h2>
 <p>On peut visualiser un ou plusieurs termes dans leur contexte, afin d’avoir une meilleure compréhension de leur sens. Pour cela on utilise la fonction “kwic” pour key word in context, à partir de l’objet tokens :</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">kwic</span>(tok,<span class="st">"livraison"</span>,<span class="at">window =</span> <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
